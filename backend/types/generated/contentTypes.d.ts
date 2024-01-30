@@ -362,6 +362,43 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiCategoriaCategoria extends Schema.CollectionType {
+  collectionName: 'categorias';
+  info: {
+    singularName: 'categoria';
+    pluralName: 'categorias';
+    displayName: 'categoria';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    nom: Attribute.String & Attribute.Required & Attribute.Unique;
+    discotecas: Attribute.Relation<
+      'api::categoria.categoria',
+      'manyToMany',
+      'api::discoteca.discoteca'
+    >;
+    descripcio: Attribute.Blocks;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::categoria.categoria',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::categoria.categoria',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiDiscotecaDiscoteca extends Schema.CollectionType {
   collectionName: 'discotecas';
   info: {
@@ -377,8 +414,6 @@ export interface ApiDiscotecaDiscoteca extends Schema.CollectionType {
     nom: Attribute.String & Attribute.Required & Attribute.Unique;
     descripcio: Attribute.Blocks;
     imatge: Attribute.Media;
-    obertura: Attribute.DateTime;
-    email: Attribute.Email;
     edat: Attribute.Integer &
       Attribute.Required &
       Attribute.SetMinMax<
@@ -388,7 +423,13 @@ export interface ApiDiscotecaDiscoteca extends Schema.CollectionType {
         },
         number
       >;
-    tancament: Attribute.DateTime & Attribute.Required;
+    categorias: Attribute.Relation<
+      'api::discoteca.discoteca',
+      'manyToMany',
+      'api::categoria.categoria'
+    >;
+    obertura: Attribute.Blocks;
+    tel: Attribute.BigInteger;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -836,6 +877,7 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::categoria.categoria': ApiCategoriaCategoria;
       'api::discoteca.discoteca': ApiDiscotecaDiscoteca;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;

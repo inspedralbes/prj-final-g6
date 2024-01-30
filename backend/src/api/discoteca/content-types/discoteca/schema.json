@@ -31,21 +31,23 @@
         "audios"
       ]
     },
-    "obertura": {
-      "type": "datetime"
-    },
-    "email": {
-      "type": "email"
-    },
     "edat": {
       "type": "integer",
       "required": true,
       "max": 22,
       "min": 15
     },
-    "tancament": {
-      "type": "datetime",
-      "required": true
+    "categorias": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::categoria.categoria",
+      "mappedBy": "discotecas"
+    },
+    "obertura": {
+      "type": "blocks"
+    },
+    "tel": {
+      "type": "biginteger"
     }
   }
 }
