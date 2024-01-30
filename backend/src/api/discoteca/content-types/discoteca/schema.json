@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "discotecas",
+  "info": {
+    "singularName": "discoteca",
+    "pluralName": "discotecas",
+    "displayName": "Discoteca",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nom": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "descripcio": {
+      "type": "blocks"
+    },
+    "imatge": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "obertura": {
+      "type": "datetime"
+    },
+    "email": {
+      "type": "email"
+    },
+    "edat": {
+      "type": "integer",
+      "required": true,
+      "max": 22,
+      "min": 15
+    },
+    "tancament": {
+      "type": "datetime",
+      "required": true
+    }
+  }
+}

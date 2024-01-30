@@ -17,3 +17,7 @@ El projecte s'ha de poder desplegar en mode desenvolupament simplement fent dock
  * Adreça del prototip gràfic del projecte (Penpot, figma, moqups...)
  * URL de producció (quan la tingueu)
  * Estat: (explicació d'en quin punt està)
+
+# Usuari contrasenya strapi
+ * a20poldonpoz@inspedralbes.cat
+ * Pedralbes1
