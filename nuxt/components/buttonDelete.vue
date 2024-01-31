@@ -7,14 +7,14 @@
 <script>
 export default {
     props: {
-        llibreId: {
+        discotecaId: {
             type: Number,
             required: true 
         }
     },
     methods: {
         async delete() {
-            await strapi.entityService.delete('api::libro.libro', llibreId);
+            await strapi.entityService.delete('api::discoteca.discoteca', discotecaId);
         }
     }
 }
