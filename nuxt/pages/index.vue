@@ -40,6 +40,131 @@
 
   
 <script>
+export default {
+    head() {
+        return {
+            link:
+                [
+                    {
+                        rel: 'preconnect',
+                        href: 'https://fonts.googleapis.com',
+                    },
+                    {
+                        rel: 'preconnect',
+                        href: 'https://fonts.gstatic.com',
+                        crossorigin: true,
+                    },
+                    {
+                        rel: 'stylesheet',
+                        href: 'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fjalla+One&display=swap',
+                    },
+                ],
+        };
+    },
+    data() {
+        return {
+            punto_de_interes_seleccionado: null,
+            map: null,
+            arr_puntos_de_interes: [],
+            marker: null,
+            data: null,
+        };
+    },
+    mounted() {
+
+        if (process.client) {
+
+            const leafletCSS = document.createElement('link');
+            leafletCSS.rel = 'stylesheet';
+            leafletCSS.href = 'https://unpkg.com/leaflet/dist/leaflet.css';
+            document.head.appendChild(leafletCSS);
+
+
+            const leafletJS = document.createElement('script');
+            leafletJS.src = 'https://unpkg.com/leaflet/dist/leaflet.js';
+            leafletJS.onload = this.initMap;
+            document.body.appendChild(leafletJS);
+        }
+
+
+
+    },
+    methods: {
+        fetchData(){
+          
+        },
+        cerrarPopUp(){
+            this.punto_de_interes_seleccionado = null;
+        },
+        initMap() {
+            this.map = L.map('map', {
+                center: [40, -4],
+                zoom: 6,
+                minZoom: 6,
+                maxZoom: 17,
+            });
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+            }).addTo(this.map);
+
+
+            const locations = [
+                { latLng: [41.35567342431939, 2.0947632393357907], nombre_discoteca: 'MALALTS DE FESTA', descripcion: '', },
+                { latLng: [41.397917303330644, 2.19113223925985], nombre_discoteca: 'RAZZMATAZZ' },
+                { latLng: [41.393762946100026, 2.157926368172369], nombre_discoteca: 'TWENTIES BARCELONA' },
+                { latLng: [41.37456718887626, 2.169596668171634], nombre_discoteca: 'SALA APOLO' },
+                { latLng: [41.39603579270717, 2.188619054677886], nombre_discoteca: 'WOLF BARCELONA' },
+                { latLng: [41.36033448432702, 2.109363168171127], nombre_discoteca: 'SALA SALAMANDRA' },
+                { latLng: [41.39565454188381, 2.1522306970075755], nombre_discoteca: 'LA BIBLIO BARCELONA' },
+            ];
+
+            this.map.on('zoomend', () => {
+                this.clearMarkers();
+                this.crearLocalizacionesEnElMapa(locations);
+            });
+
+
+            this.crearLocalizacionesEnElMapa(locations);
+        },
+
+        crearLocalizacionesEnElMapa(locations) {
+            const zoomLevel = this.map.getZoom();
+
+            document.getElementById('Barcelona').addEventListener('click', () => {
+                this.map.setView([41.35567342431939, 2.0947632393357907], 12);
+            });
+
+
+            if (zoomLevel >= 12) {
+                locations.forEach((location) => {
+                    const marker = L.marker(location.latLng).addTo(this.map);
+
+                    marker.bindPopup((location.nombre_discoteca), { className: 'custom-popup' });
+
+
+                    marker.on('click', () => {
+                        this.punto_de_interes_seleccionado = location;
+                    });
+
+                    this.marker = marker;
+                    this.arr_puntos_de_interes.push(marker);
+                });
+            }
+        },
+        clearMarkers() {
+            this.arr_puntos_de_interes.forEach((marker) => {
+                marker.remove();
+            });
+            this.arr_puntos_de_interes = [];
+        },
+    },
+};
+</script>
+  
+
+  
+<script>
 
 export default {
     head() {
