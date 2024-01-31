@@ -18,7 +18,12 @@ export default class Apiservices {
     async getDiscotecas() {
         return await this.fetchCall(`${this.baseUrl}/api/Discotecas?populate=*`, 'GET');
     }
-    
+
+    async createDiscoteca(infoDiscoteca) {
+        return await this.fetchCall(`${this.baseUrl}/api/Discotecas`, 'POST', infoDiscoteca);
+      }
+      
+
 
 }
 

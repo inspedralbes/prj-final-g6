@@ -1,6 +1,6 @@
 <template>
     <div>
-      <h1 class="titulo">Llista de discotecas</h1>
+      <h1 class="titulo">CRUD</h1>
       <div v-for="discoteca in arr_discoteca" :key="discoteca.id" class="disco">
         <h2 class="nombre-discoteca">{{ discoteca.attributes.nom }}</h2>
         
@@ -26,7 +26,7 @@
              alt="" class="imagen-disco">
              
         <div class="botones">
-          <buttonCreate />
+          <RouterLink to="/create">Create</RouterLink>
           <buttonDelete :discotecaId="discoteca.id" />
           <buttonEdit :discotecaId="discoteca.id" />
         </div>
