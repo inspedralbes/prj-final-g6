@@ -27,8 +27,8 @@
              
         <div class="botones">
           <RouterLink to="/create">Create</RouterLink>
-          <buttonDelete :discotecaId="discoteca.id" />
-          <buttonEdit :discotecaId="discoteca.id" />
+          <RouterLink to="/delete">Delete</RouterLink>
+          <RouterLink to="/update">Update</RouterLink>
         </div>
       </div>
     </div>

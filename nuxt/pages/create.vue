@@ -1,5 +1,8 @@
 <template>
     <div>
+      <router-link :to="{ name: 'crud' }">
+        <img src="/public/img/arrow.png" alt="Imagen Botón" class="boton-imagen" width="30px" height="30px">
+      </router-link>
       <form @submit.prevent="submitForm">
         <div>
           <label for="nom">Nom:</label>
