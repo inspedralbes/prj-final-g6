@@ -15,7 +15,7 @@
         <div v-if="punto_de_interes_seleccionado && pin_seleccionado" class="info-card">
             <div class="card">
                 <div class="card-header">
-                    <h3>{{ pin_seleccionado.nombre_discoteca }}</h3>
+                    <h3>{{ pin_seleccionado.titulo }}</h3>
                     <div class="card-closer" @click="cerrarPopUp">X</div>
 
                 </div>
@@ -71,13 +71,13 @@ export default {
             marker: null,
             data: [],
             puntos_de_interes: [
-                { coordenadas: [2.0947632393357907, 41.35567342431939], nombre_discoteca: 'MALALTS DE FESTA' },
-                { coordenadas: [2.19113223925985, 41.397917303330644], nombre_discoteca: 'RAZZMATAZZ' },
-                { coordenadas: [2.157926368172369, 41.393762946100026], nombre_discoteca: 'TWENTIES BARCELONA' },
-                { coordenadas: [2.169596668171634, 41.37456718887626], nombre_discoteca: 'SALA APOLO' },
-                { coordenadas: [2.188619054677886, 41.39603579270717], nombre_discoteca: 'WOLF BARCELONA' },
-                { coordenadas: [2.109363168171127, 41.36033448432702], nombre_discoteca: 'SALA SALAMANDRA' },
-                { coordenadas: [2.1522306970075755, 41.39565454188381], nombre_discoteca: 'LA BIBLIO BARCELONA' },
+                { coordenadas: [2.0947632393357907, 41.35567342431939], titulo: 'MALALTS DE FESTA', imagenUrl: '', descripcion: '', },
+                { coordenadas: [2.19113223925985, 41.397917303330644], titulo: 'RAZZMATAZZ' },
+                { coordenadas: [2.157926368172369, 41.393762946100026], titulo: 'TWENTIES BARCELONA' },
+                { coordenadas: [2.169596668171634, 41.37456718887626], titulo: 'SALA APOLO' },
+                { coordenadas: [2.188619054677886, 41.39603579270717], titulo: 'WOLF BARCELONA' },
+                { coordenadas: [2.109363168171127, 41.36033448432702], titulo: 'SALA SALAMANDRA' },
+                { coordenadas: [2.1522306970075755, 41.39565454188381], titulo: 'LA BIBLIO BARCELONA' },
             ],
             icono_llevar_a_barcelona: null,
         };
@@ -96,9 +96,7 @@ export default {
 
             this.añadir_popup_info_de_las_discos();
 
-
         });
-
 
 
     },
@@ -132,13 +130,11 @@ export default {
                         },
                         'properties': {
                             'id': index,
-                            'nombre_discoteca': punto.nombre_discoteca,
+                            'titulo': punto.titulo,
                             'horario': '',
                             'imagen': '',
                             'descripcion': '',
-                            'direccion': '',
                             'telefono': '',
-                            'web': '',
                         }
                     }))
                 }

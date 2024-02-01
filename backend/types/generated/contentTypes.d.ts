@@ -362,6 +362,92 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiCategoriaCategoria extends Schema.CollectionType {
+  collectionName: 'categorias';
+  info: {
+    singularName: 'categoria';
+    pluralName: 'categorias';
+    displayName: 'categoria';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    nom: Attribute.String & Attribute.Required & Attribute.Unique;
+    discotecas: Attribute.Relation<
+      'api::categoria.categoria',
+      'manyToMany',
+      'api::discoteca.discoteca'
+    >;
+    descripcio: Attribute.Blocks;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::categoria.categoria',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::categoria.categoria',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiDiscotecaDiscoteca extends Schema.CollectionType {
+  collectionName: 'discotecas';
+  info: {
+    singularName: 'discoteca';
+    pluralName: 'discotecas';
+    displayName: 'Discoteca';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    nom: Attribute.String & Attribute.Required & Attribute.Unique;
+    descripcio: Attribute.Blocks;
+    imatge: Attribute.Media;
+    edat: Attribute.Integer &
+      Attribute.Required &
+      Attribute.SetMinMax<
+        {
+          min: 15;
+          max: 22;
+        },
+        number
+      >;
+    categorias: Attribute.Relation<
+      'api::discoteca.discoteca',
+      'manyToMany',
+      'api::categoria.categoria'
+    >;
+    obertura: Attribute.Blocks;
+    tel: Attribute.BigInteger;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::discoteca.discoteca',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::discoteca.discoteca',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -781,92 +867,6 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
 }
 
-export interface ApiCategoriaCategoria extends Schema.CollectionType {
-  collectionName: 'categorias';
-  info: {
-    singularName: 'categoria';
-    pluralName: 'categorias';
-    displayName: 'categoria';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    nom: Attribute.String & Attribute.Required & Attribute.Unique;
-    discotecas: Attribute.Relation<
-      'api::categoria.categoria',
-      'manyToMany',
-      'api::discoteca.discoteca'
-    >;
-    descripcio: Attribute.Blocks;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::categoria.categoria',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::categoria.categoria',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiDiscotecaDiscoteca extends Schema.CollectionType {
-  collectionName: 'discotecas';
-  info: {
-    singularName: 'discoteca';
-    pluralName: 'discotecas';
-    displayName: 'Discoteca';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    nom: Attribute.String & Attribute.Required & Attribute.Unique;
-    descripcio: Attribute.Blocks;
-    imatge: Attribute.Media;
-    edat: Attribute.Integer &
-      Attribute.Required &
-      Attribute.SetMinMax<
-        {
-          min: 15;
-          max: 22;
-        },
-        number
-      >;
-    categorias: Attribute.Relation<
-      'api::discoteca.discoteca',
-      'manyToMany',
-      'api::categoria.categoria'
-    >;
-    obertura: Attribute.Blocks;
-    tel: Attribute.BigInteger;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::discoteca.discoteca',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::discoteca.discoteca',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -877,6 +877,8 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::categoria.categoria': ApiCategoriaCategoria;
+      'api::discoteca.discoteca': ApiDiscotecaDiscoteca;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
@@ -885,8 +887,6 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
-      'api::categoria.categoria': ApiCategoriaCategoria;
-      'api::discoteca.discoteca': ApiDiscotecaDiscoteca;
     }
   }
 }
