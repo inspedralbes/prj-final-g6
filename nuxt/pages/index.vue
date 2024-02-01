@@ -2,6 +2,10 @@
     <div class="container">
 
         <nav class="navbar">
+            <!-- Add this input field within your template -->
+            <input type="text" v-model="searchQuery" placeholder="Search for a location">
+            <button @click="searchLocation">Search</button>
+
             <ul>
                 <li><a href="#">INICIO</a></li>
                 <li><a href="#">EXPLORAR</a></li>
@@ -17,7 +21,7 @@
                 <div class="card-header">
                     <h3>{{ pin_seleccionado.nombre_discoteca }}</h3>
                     <div class="card-closer" @click="cerrarPopUp">X</div>
-                    
+
                 </div>
                 <div class="card-body">
                     <!-- <p>{{ punto_de_interes_seleccionado.description }}</p> -->
@@ -41,6 +45,7 @@
   
 <script>
 import mapboxgl from 'mapbox-gl';
+import axios from 'axios';
 
 export default {
     head() {
@@ -50,10 +55,7 @@ export default {
                     rel: 'stylesheet',
                     href: 'https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css',
                 },
-                {
-                    rel: 'stylesheet',
-                    href: 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css',
-                },
+
                 {
                     rel: 'stylesheet',
                     href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
@@ -64,6 +66,8 @@ export default {
     },
     data() {
         return {
+            searchQuery: '',
+            pin_seleccionado: null,
             punto_de_interes_seleccionado: null,
             map: null,
             arr_puntos_de_interes: [],
@@ -142,6 +146,33 @@ export default {
         clearMarkers() {
             this.arr_puntos_de_interes.forEach(marker => marker.remove());
             this.arr_puntos_de_interes = [];
+        },
+        searchLocation() {
+            const query = this.searchQuery.trim();
+            if (query !== '') {
+                const accessToken = mapboxgl.accessToken;
+                const apiUrl = `https://api.mapbox.com/search/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${accessToken}`;
+
+                axios.get(apiUrl)
+                    .then(response => {
+                        const features = response.data.features;
+
+                        if (features && features.length > 0) {
+                            const [longitude, latitude] = features[0].center;
+
+                            // Center the map to the searched location
+                            this.map.setCenter([longitude, latitude]);
+                            this.map.setZoom(14);
+                        } else {
+                            console.error('No results found for the given query.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data from Mapbox API:', error);
+                    });
+            } else {
+                console.warn('Please enter a valid search query.');
+            }
         },
     },
 };
@@ -319,7 +350,7 @@ footer {
         max-width: 350px;
     }
 
-    .card-header > h3 {
+    .card-header>h3 {
         font-size: 30px;
     }
 
@@ -328,4 +359,4 @@ footer {
     }
 
 }
-</style>
+</style> 
