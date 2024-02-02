@@ -317,8 +317,7 @@ export default {
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.87);
     color: var(--verde2);
-    
-    
+
 }
 
 .mapboxgl-ctrl-geocoder input[type="text"] {
@@ -329,20 +328,22 @@ export default {
     border-radius: 0;
     padding: 10px;
     font-size: 1.5vw;
+    width: 100%;
     
-   
 }
 
 
 .mapboxgl-ctrl-geocoder button {
-    background-color: var(--base);
-    border-radius: 5px;
-    padding: 0px;
-    display: flex;
-    margin-left: 50px;
-    font-size: 1vw;
+    background-color: var(--naranja);
+    width: 100%;
+    border-radius: 0px 0px 10px 10px;
+    padding: 10px;
+    width: 400px;
     border: none;
+    border-top: 6px solid var(--verde2);
+  
 }
+
 
 .mapboxgl-ctrl-geocoder .suggestions {
     color: var(--carne2);
@@ -351,10 +352,16 @@ export default {
     margin: 10px;
     font-size: 1vw;
     list-style: none;
-    
-    
+
 }
 
+.mapboxgl-ctrl-geocoder .suggestions li {
+    padding: 10px;
+    border-bottom: 1.5px solid var(--verde2);
+    margin-top: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
 
 .mapboxgl-ctrl-geocoder .suggestions > div > a {
     color: var(--naranja);
