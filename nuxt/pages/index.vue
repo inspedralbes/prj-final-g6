@@ -6,7 +6,7 @@
                 <li><a href="#">INICIO</a></li>
                 <li><a href="#">EXPLORAR</a></li>
                 <li><a href="#">PERFIL</a></li>
-                <li id="Barcelona">BARCELONA</li>
+                <li>BUSCADOR</li>
             </ul>
         </nav>
 
@@ -20,14 +20,17 @@
 
                 </div>
                 <div class="card-body">
-                    <!-- <p>{{ punto_de_interes_seleccionado.description }}</p> -->
-                    LOREM IPSUM DOLOR, SIT AMET CONSECTETUR ADIPISICING ELIT. VOLUPTAS IUSTO PERSPICIATIS ISTE SINT QUI
-                    OBCAECATI NUMQUAM SAPIENTE? LAUDANTIUM, IMPEDIT LABORUM ODIO NISI DELENITI IN SAPE OBCAECATI NIHIL,
-                    ALIQUID MAXIME IUSTO.
+                    <!-- <img :src="pin_seleccionado.imgUrl" alt="imagen de la discoteca" style="width: 100%; height: 200px; object-fit: cover;"> -->
 
-                    LOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT. MOLESTIAE DELENITI, SEQUI DOLORE QUIA, NOBIS
-                    ITAQUE CORRUPTI AMET TENETUR DESERUNT QUI QUAM, SIT IURE ISTE MODI DOLOREQUE. APERIAM QUASI DEBITIS
-                    UNDE.
+                    <p>Sobre el local: {{ pin_seleccionado.descripcion }}</p>
+
+                    <p>Horario: {{ pin_seleccionado.horario }}</p>
+
+                    <p>Telefono: {{ pin_seleccionado.telefono }}</p>
+
+                    <p>Edad minima: {{ pin_seleccionado.minEdad }}</p>
+
+
                 </div>
             </div>
         </div>
@@ -42,6 +45,8 @@
 
 <script>
 import mapboxgl from 'mapbox-gl';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+
 
 export default {
     head() {
@@ -58,42 +63,37 @@ export default {
                 {
                     rel: 'stylesheet',
                     href: 'https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css'
-                }
+                },
+                {
+                    rel: 'stylesheet',
+                    href: 'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js'
+                },
+
 
             ],
         };
     },
     data() {
         return {
-            punto_de_interes_seleccionado: null,
+            punto_de_interes_seleccionado: false,
             map: null,
             arr_puntos_de_interes: [],
             marker: null,
             data: [],
-            puntos_de_interes: [
-                { coordenadas: [2.0947632393357907, 41.35567342431939], titulo: 'MALALTS DE FESTA', imagenUrl: '', descripcion: '', },
-                { coordenadas: [2.19113223925985, 41.397917303330644], titulo: 'RAZZMATAZZ' },
-                { coordenadas: [2.157926368172369, 41.393762946100026], titulo: 'TWENTIES BARCELONA' },
-                { coordenadas: [2.169596668171634, 41.37456718887626], titulo: 'SALA APOLO' },
-                { coordenadas: [2.188619054677886, 41.39603579270717], titulo: 'WOLF BARCELONA' },
-                { coordenadas: [2.109363168171127, 41.36033448432702], titulo: 'SALA SALAMANDRA' },
-                { coordenadas: [2.1522306970075755, 41.39565454188381], titulo: 'LA BIBLIO BARCELONA' },
-            ],
             icono_llevar_a_barcelona: null,
+
         };
     },
     mounted() {
 
+
         this.initMapaDatosMapBox();
+        this.fetchData();
 
         this.map.on('load', () => {
-
             this.crear_mostrar_pines_discos();
-
             this.crear_mostrar_pin_barcelona();
-
             this.establecer_visibilidad_segun_zoom_pines();
-
             this.añadir_popup_info_de_las_discos();
 
         });
@@ -102,6 +102,30 @@ export default {
     },
 
     methods: {
+        async fetchData() {
+
+            const response = await fetch('http://localhost:8000/api/discotecas');
+
+
+            const data = await response.json();
+
+            this.data = data.map((discoteca) => {
+
+                return {
+                    id: discoteca.id,
+                    titulo: discoteca.nombre_local,
+                    coordenadas: JSON.parse(discoteca.coordenadas),
+                    imgUrl: discoteca.imgUrl,
+                    descripcion: discoteca.descripcion,
+                    telefono: discoteca.telefono,
+                    horario: discoteca.horario,
+                    minEdad: discoteca.minEdad,
+                };
+
+            });
+
+
+        },
         initMapaDatosMapBox() {
             mapboxgl.accessToken = 'pk.eyJ1IjoiYTIyam9zbGFyZmVyIiwiYSI6ImNsczIwdDY5YTBldncyc21rbmI4cnVjY3oifQ.mWjSoIuuwJmMG0EFCU_gEA';
 
@@ -111,36 +135,55 @@ export default {
                 center: [2.0947632393357907, 39.35567342431939],
                 zoom: 5,
             });
-      
+
+            this.map.addControl(
+                new MapboxGeocoder({
+                    accessToken: mapboxgl.accessToken,
+                    mapboxgl: mapboxgl
+                }),
+                'top-right'
+               
+            );
+
         },
         crear_mostrar_pines_discos() {
+
+
             if (this.map.getLayer('points')) {
                 this.map.removeLayer('points');
             }
+
+            const features = this.data.map((punto, index) => {
+
+                const coordinates = [punto.coordenadas[1], punto.coordenadas[0]];
+
+                return {
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': coordinates,
+                    },
+                    'properties': {
+                        'id': index,
+                        'titulo': punto.titulo,
+                        'horario': punto.horario,
+                        'imagen': punto.imgUrl,
+                        'descripcion': punto.descripcion,
+                        'telefono': punto.telefono,
+                        'minEdad': punto.minEdad,
+                    }
+                };
+            });
+
+
 
             this.map.addSource('points', {
                 'type': 'geojson',
                 'data': {
                     'type': 'FeatureCollection',
-                    'features': this.puntos_de_interes.map((punto, index) => ({
-                        'type': 'Feature',
-                        'geometry': {
-                            'type': 'Point',
-                            'coordinates': punto.coordenadas,
-                        },
-                        'properties': {
-                            'id': index,
-                            'titulo': punto.titulo,
-                            'horario': '',
-                            'imagen': '',
-                            'descripcion': '',
-                            'telefono': '',
-                        }
-                    }))
+                    'features': features
                 }
             });
-
-
 
             this.map.addLayer({
                 'id': 'points',
@@ -154,12 +197,16 @@ export default {
                     'circle-color': '#dfdfdf',
                 },
                 'minzoom': 10,
-                'maxzoom': 15,
+                'maxzoom': 18,
             });
+
+            console.log('ACABAR DE CREAR PINES GENERALES 3/3');
+
 
 
         },
         crear_mostrar_pin_barcelona() {
+
 
             this.map.addLayer({
                 'id': 'barcelona-pin',
@@ -176,20 +223,23 @@ export default {
                             },
                             'properties': {
                                 'id': 'barcelona-pin',
+
                             }
                         }]
                     }
                 },
                 'layout': {
                     'visibility': 'visible'
+
                 },
                 'paint': {
                     'circle-radius': 15,
+
                     'circle-color': '#ff0000',
                 },
             });
 
-            
+
 
         },
         establecer_visibilidad_segun_zoom_pines() {
@@ -223,18 +273,19 @@ export default {
                 this.map.setLayoutProperty('barcelona-pin', 'visibility', 'none');
             });
         },
+
         añadir_popup_info_de_las_discos() {
             this.map.on('click', 'points', (e) => {
-                // Get the id of the clicked point
                 this.cerrarPopUp();
-                const id = e.features[0].properties.id;
-                console.log('Clicked point id:', id);
-                console.log('Selected point:', this.puntos_de_interes[id]);
+                if (e.features && e.features.length > 0) {
+                    const id = e.features[0].properties.id;
+                    if (id !== undefined && id < this.data.length) {
 
-                this.punto_de_interes_seleccionado = true;
-                this.pin_seleccionado = this.puntos_de_interes[id];
+                        this.punto_de_interes_seleccionado = true;
+                        this.pin_seleccionado = this.data[id];
+                    }
+                }
             });
-
         },
         cerrarPopUp() {
             this.punto_de_interes_seleccionado = null;
@@ -253,17 +304,73 @@ export default {
 
 
 <style>
+@import url('https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css');
 @import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&display=swap');
 
+.mapboxgl-ctrl-geocoder {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    width: 400px;
+    background-color: var(--base);
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.87);
+    color: var(--verde2);
+    
+    
+}
+
+.mapboxgl-ctrl-geocoder input[type="text"] {
+    background-color: var(--base);
+    color: var(--verde2);
+    border: none;
+    border-bottom: 2px solid var(--verde2);
+    border-radius: 0;
+    padding: 10px;
+    font-size: 1.5vw;
+    
+   
+}
+
+
+.mapboxgl-ctrl-geocoder button {
+    background-color: var(--base);
+    border-radius: 5px;
+    padding: 0px;
+    display: flex;
+    margin-left: 50px;
+    font-size: 1vw;
+    border: none;
+}
+
+.mapboxgl-ctrl-geocoder .suggestions {
+    color: var(--carne2);
+    border: none;
+    padding: 10px;
+    margin: 10px;
+    font-size: 1vw;
+    list-style: none;
+    
+    
+}
+
+
+.mapboxgl-ctrl-geocoder .suggestions > div > a {
+    color: var(--naranja);
+    text-decoration: none;
+    font-size: 0;
+}
+
+
+
 :root {
-    /* ESQUEMA DE COLORES 1 */
     --base: hsl(0, 5%, 16%);
     --verde: hsl(155, 81%, 46%);
     --rosa: hsl(303, 97%, 85%);
     --carne: hsl(14, 45%, 89%);
     --azul: hsl(226, 64%, 58%);
     --blanco: hsl(0, 0%, 100%);
-    /* ESQUEMA DE COLORES 2 */
     --base2: hsl(354, 9%, 5%);
     --verde2: hsl(124, 9%, 32%);
     --naranja: hsl(32, 85%, 76%);
@@ -282,7 +389,6 @@ footer {
     width: 100%;
     height: 50px;
     background-color: var(--base);
-
 }
 
 * {
@@ -290,18 +396,13 @@ footer {
     padding: 0;
     box-sizing: border-box;
     font-family: 'Antonio', sans-serif;
-    overflow: hidden;
-    overflow-y: hidden;
 }
-
-/* ESTILOS PARA LA BARRA DE NAVEGACION */
 
 .navbar {
     font-size: 3vw;
     width: 100%;
     height: 150px;
     background-color: var(--base);
-    font-size: 30px;
 }
 
 .navbar ul {
@@ -311,7 +412,6 @@ footer {
     list-style: none;
     height: 100%;
     color: var(--blanco);
-
 }
 
 .navbar ul li {
@@ -329,11 +429,9 @@ footer {
 
 .navbar ul li a {
     text-decoration: none;
-    color: var(----blanco);
+    color: var(--blanco);
 }
 
-
-/* ESTILOS PARA LOS PANELES DE INFORMACION */
 .info-card {
     position: absolute;
     top: 155px;
@@ -345,18 +443,6 @@ footer {
     color: var(--verde2);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.87);
     animation: fade-in 0.5s ease-in-out;
-}
-
-@keyframes fade-in {
-    0% {
-        opacity: 0.33;
-        transform: translateY(40px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .card-closer {
@@ -379,25 +465,16 @@ footer {
     padding: 10px;
     font-size: 2vw;
     color: var(--base);
-
 }
-
-
-
 
 .card-body {
     text-align: justify;
     padding: 20px;
     line-height: 1.1;
     font-size: 1.2vw;
-
 }
 
-/* ESTILOS PARA MOBIL */
-
-/* Media queries for responsiveness */
 @media only screen and (max-width: 768px) {
-
     .navbar {
         font-size: 20px;
         height: 100px;
@@ -420,6 +497,5 @@ footer {
     .card-body {
         font-size: 20px;
     }
-
 }
 </style>

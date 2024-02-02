@@ -13,8 +13,10 @@ class discoController extends Controller
 
     public function getDiscotecas()
     {
-        $discotecas['data'] = discoModel::all();
-        return $discotecas;
+        $discotecas = discoModel::all();
+        
+        return response()->json($discotecas);
+      
     }
 
     // funcion para obtener una discoteca por id
