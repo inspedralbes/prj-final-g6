@@ -340,7 +340,7 @@ export default {
     padding: 10px;
     width: 400px;
     border: none;
-    border-top: 6px solid var(--verde2);
+    border-top: 3px solid var(--verde2);
   
 }
 
@@ -358,6 +358,7 @@ export default {
 .mapboxgl-ctrl-geocoder .suggestions li {
     padding: 10px;
     border-bottom: 1.5px solid var(--verde2);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.87);
     margin-top: 12px;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
