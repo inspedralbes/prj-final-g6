@@ -3,12 +3,15 @@
 
         <nav class="navbar">
             <ul>
+                <li></li>
                 <li><a href="#">INICIO</a></li>
                 <li><a href="#">EXPLORAR</a></li>
                 <li><a href="#">PERFIL</a></li>
-                <li>BUSCADOR</li>
+                
             </ul>
+          
         </nav>
+        <div id="buscador"></div>
 
         <div id="map" ref="map" style="height: 100%; width: 100%;"></div>
 
@@ -135,15 +138,16 @@ export default {
                 center: [2.0947632393357907, 39.35567342431939],
                 zoom: 5,
             });
-
-            this.map.addControl(
-                new MapboxGeocoder({
-                    accessToken: mapboxgl.accessToken,
-                    mapboxgl: mapboxgl
-                }),
-                'top-right'
-               
-            );
+            var geocoder = new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                mapboxgl: mapboxgl
+            });
+            this.map.addControl(geocoder);
+            this.$nextTick(() => {
+                var geocoderElement = document.querySelector('.mapboxgl-ctrl-geocoder');
+                var searchBar = document.getElementById('buscador');
+                searchBar.appendChild(geocoderElement);
+            });
 
         },
         crear_mostrar_pines_discos() {
@@ -307,68 +311,6 @@ export default {
 @import url('https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css');
 @import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&display=swap');
 
-.mapboxgl-ctrl-geocoder {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 1000;
-    width: 400px;
-    background-color: var(--base);
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.87);
-    color: var(--verde2);
-
-}
-
-.mapboxgl-ctrl-geocoder input[type="text"] {
-    background-color: var(--base);
-    color: var(--verde2);
-    border: none;
-    border-bottom: 2px solid var(--verde2);
-    border-radius: 0;
-    padding: 10px;
-    font-size: 1.5vw;
-    width: 100%;
-    
-}
-
-
-.mapboxgl-ctrl-geocoder button {
-    background-color: var(--naranja);
-    width: 100%;
-    border-radius: 0px 0px 10px 10px;
-    padding: 10px;
-    width: 400px;
-    border: none;
-    border-top: 3px solid var(--verde2);
-  
-}
-
-
-.mapboxgl-ctrl-geocoder .suggestions {
-    color: var(--carne2);
-    border: none;
-    padding: 10px;
-    margin: 10px;
-    font-size: 1vw;
-    list-style: none;
-
-}
-
-.mapboxgl-ctrl-geocoder .suggestions li {
-    padding: 10px;
-    border-bottom: 1.5px solid var(--verde2);
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.87);
-    margin-top: 12px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.mapboxgl-ctrl-geocoder .suggestions > div > a {
-    color: var(--naranja);
-    text-decoration: none;
-    font-size: 0;
-}
 
 
 
@@ -407,7 +349,7 @@ footer {
 }
 
 .navbar {
-    font-size: 3vw;
+ 
     width: 100%;
     height: 150px;
     background-color: var(--base);
@@ -421,13 +363,16 @@ footer {
     height: 100%;
     color: var(--blanco);
 }
+.navbar>ul>li{
+    font-size: 60px;
+}
 
 .navbar ul li {
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 60px;
+    
 }
 
 .navbar ul li:hover,
@@ -506,4 +451,84 @@ footer {
         font-size: 20px;
     }
 }
+
+
+/* Estilos searchbar nav */
+
+.mapboxgl-ctrl-geocoder {
+    position: absolute;
+    top: 40px;
+    left: 10px;
+    z-index: 1000;
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.87);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+
+}
+
+.mapboxgl-ctrl-geocoder input[type="text"] {
+    background-color: var(--base);
+    border: none;
+    color: var(--verde2);
+    font-size: 1.5vw;
+    padding: 10px;
+}
+
+
+.mapboxgl-ctrl-geocoder button {
+    background-color: var(--verde2);
+    font-size: .5vw;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.mapboxgl-ctrl-geocoder .suggestions {
+    position: absolute;
+    top: 100px;
+    left: 10px;
+    z-index: 1000;
+    background-color: var(--verde2);
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.87);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    color: var(--base);
+        
+}
+
+.mapboxgl-ctrl-geocoder .suggestions li {
+    list-style: none;
+    padding: 10px;
+    font-size: 1.2vw;
+    color: var(--verde2);
+    text-justify: center;
+    background-color: var(--base);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.87);
+    margin: 14px;
+    border-radius: 5px;
+  
+}
+.mapboxgl-ctrl-geocoder .suggestions li:hover{
+    color: var(--naranja);
+    cursor: pointer;
+
+}
+
+.mapboxgl-ctrl-geocoder .suggestions>div>a {
+    color: var(--naranja);
+    text-decoration: none;
+    font-size: 0;
+}
+
+
+
+
+
 </style>
