@@ -1,18 +1,17 @@
 <template>
     <div class="container">
-
         <nav class="navbar">
-            <!-- Add this input field within your template -->
-            <input type="text" v-model="searchQuery" placeholder="Search for a location">
-            <button @click="searchLocation">Search</button>
-
             <ul>
                 <li><a href="#">INICIO</a></li>
                 <li><a href="#">EXPLORAR</a></li>
                 <li><a href="#">PERFIL</a></li>
                 <li id="Barcelona">BARCELONA</li>
+                <div id="map-search" ref="mapSearch"></div>
+
             </ul>
         </nav>
+
+      
 
         <div id="map" ref="map" style="height: 100%; width: 100%;"></div>
 
@@ -45,27 +44,40 @@
   
 <script>
 import mapboxgl from 'mapbox-gl';
-import axios from 'axios';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 
 export default {
     head() {
+
         return {
             link: [
                 {
                     rel: 'stylesheet',
                     href: 'https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css',
                 },
-
                 {
                     rel: 'stylesheet',
                     href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
-                }
+                },
+                {
+                    rel: 'stylesheet',
+                    href: 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css',
+             
+
+                },
 
             ],
         };
     },
+
     data() {
         return {
+            customData: {
+                'features': [],
+            },
+
             searchQuery: '',
             pin_seleccionado: null,
             punto_de_interes_seleccionado: null,
@@ -94,6 +106,16 @@ export default {
             center: [2.0947632393357907, 39.35567342431939],
             zoom: 5,
         });
+        const geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        localGeocoder: this.forwardGeocoder,
+        zoom: 14,
+        placeholder: 'Ingrese un lugar a buscar',
+        mapboxgl: mapboxgl
+    });
+    this.map.addControl(geocoder, 'top-right'); 
+
+     
         this.map.on('load', () => {
             // Add a source for the points of interest
             this.map.addSource('points', {
@@ -137,6 +159,7 @@ export default {
     },
 
     methods: {
+
         cerrarPopUp() {
             this.punto_de_interes_seleccionado = null;
             this.selectedItem = null;
@@ -147,32 +170,23 @@ export default {
             this.arr_puntos_de_interes.forEach(marker => marker.remove());
             this.arr_puntos_de_interes = [];
         },
-        searchLocation() {
-            const query = this.searchQuery.trim();
-            if (query !== '') {
-                const accessToken = mapboxgl.accessToken;
-                const apiUrl = `https://api.mapbox.com/search/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${accessToken}`;
-
-                axios.get(apiUrl)
-                    .then(response => {
-                        const features = response.data.features;
-
-                        if (features && features.length > 0) {
-                            const [longitude, latitude] = features[0].center;
-
-                            // Center the map to the searched location
-                            this.map.setCenter([longitude, latitude]);
-                            this.map.setZoom(14);
-                        } else {
-                            console.error('No results found for the given query.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching data from Mapbox API:', error);
-                    });
-            } else {
-                console.warn('Please enter a valid search query.');
+      
+        forwardGeocoder(query) {
+            var matchingFeatures = [];
+            for (var i = 0; i < this.customData.features.length; i++) {
+                var feature = this.customData.features[i];
+                if (
+                    feature.properties.title
+                        .toLowerCase()
+                        .search(query.toLowerCase()) !== -1
+                ) {
+                    feature['place_name'] = '🌲 ' + feature.properties.title;
+                    feature['center'] = feature.geometry.coordinates;
+                    feature['place_type'] = ['park'];
+                    matchingFeatures.push(feature);
+                }
             }
+            return matchingFeatures;
         },
     },
 };
@@ -183,6 +197,41 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&display=swap');
+
+/* Estilo para el contenedor del mapa (asumiendo que tienes otros estilos) */
+
+
+
+
+.mapboxgl-ctrl-geocoder input[type="text"] {
+    /* Add your custom styles here */
+    width: 100%; /* Set the width as needed */
+    padding: 10px; /* Adjust padding */
+    font-size: 16px; /* Adjust font size */
+    /* Add any other styles you want to customize */
+}
+
+/* Target the suggestion list (dropdown) */
+.mapboxgl-ctrl-geocoder .suggestions {
+    /* Add your custom styles for the suggestion list here */
+    background-color: #fff; /* Example background color */
+    border: 1px solid #ddd; /* Example border */
+    /* Add any other styles you want to customize */
+}
+
+/* Target individual suggestions in the list */
+.mapboxgl-ctrl-geocoder .suggestion-item {
+    /* Add your custom styles for individual suggestions here */
+    padding: 8px;
+    cursor: pointer;
+    /* Add any other styles you want to customize */
+}
+
+/* Style for the active (highlighted) suggestion */
+.mapboxgl-ctrl-geocoder .suggestion-item.active {
+    background-color: #f0f0f0; /* Example background color for active suggestion */
+    /* Add any other styles you want to customize */
+}
 
 .material-symbols-outlined {
     font-variation-settings:
@@ -228,7 +277,6 @@ footer {
     box-sizing: border-box;
     font-family: 'Antonio', sans-serif;
     overflow: hidden;
-    overflow-y: hidden;
 }
 
 /* ESTILOS PARA LA BARRA DE NAVEGACION */
@@ -266,7 +314,7 @@ footer {
 
 .navbar ul li a {
     text-decoration: none;
-    color: var(----blanco);
+    color: var(--blanco);
 }
 
 
@@ -315,8 +363,8 @@ footer {
     border-radius: 5px 5px 0 0;
     padding: 10px;
     font-size: 2vw;
-    color: var(--base);
-
+    color: var(--verde);
+    /* o el color que desees */
 }
 
 
