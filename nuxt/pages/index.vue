@@ -4,12 +4,10 @@
         <nav class="navbar">
             <ul>
                 <li></li>
-                <li><a href="#">INICIO</a></li>
-                <li><a href="#">EXPLORAR</a></li>
-                <li><a href="#">PERFIL</a></li>
-                
-            </ul>
-          
+                <li><nuxt-link to="/">INICIO</nuxt-link></li>
+                <li><nuxt-link to="/explorar">EXPLORAR</nuxt-link></li>
+                <li><nuxt-link to="/perfil">PERFIL</nuxt-link></li>
+            </ul> 
         </nav>
         <div id="buscador"></div>
 
@@ -58,10 +56,6 @@ export default {
                 {
                     rel: 'stylesheet',
                     href: 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css',
-                },
-                {
-                    rel: 'stylesheet',
-                    href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
                 },
                 {
                     rel: 'stylesheet',
@@ -238,7 +232,7 @@ export default {
                 },
                 'paint': {
                     'circle-radius': 15,
-
+        
                     'circle-color': '#ff0000',
                 },
             });
