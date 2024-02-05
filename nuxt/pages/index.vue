@@ -246,7 +246,6 @@ export default {
                 }
             });
         },
-
         cerrarPopUp() {
             this.punto_de_interes_seleccionado = null;
             this.pin_seleccionado = null;
@@ -255,7 +254,6 @@ export default {
             this.arr_puntos_de_interes.forEach(marker => marker.remove());
             this.arr_puntos_de_interes = [];
         },
-
     },
 };
 
