@@ -13,7 +13,7 @@ class userController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'nombre' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required',
             'password2' => 'required|same:password',
@@ -21,9 +21,11 @@ class userController extends Controller
             'birthdate' => 'required',
         ]);
 
-        $user = new User();
-        $user->name = $request->name;
+        $user = new usuarioModel();
+        $user->nombre = $request->nombre;
         $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->birthdate = $request->birthdate;
         $user->password = Hash::make($request->password);
 
         $user->save();
@@ -41,7 +43,7 @@ class userController extends Controller
             'password' => 'required'
 
         ]);
-        $user = User::where("email", "=", $request->email)->first();
+        $user = usuarioModel::where("email", "=", $request->email)->first();
 
         if (isset($user->id)) {
             if (Hash::check($request->password, $user->password)) {
