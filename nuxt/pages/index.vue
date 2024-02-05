@@ -75,11 +75,6 @@ export default {
     mounted() {
         this.initMapaDatosMapBox();
         this.fetchData();
-
-        this.map.on('load', () => {
-            this.crear_mostrar_pines_discos();
-            this.añadir_popup_info_de_las_discos();
-        });
     },
 
 
@@ -105,6 +100,9 @@ export default {
                 };
 
             });
+
+            this.crear_mostrar_pines_discos();
+            this.añadir_popup_info_de_las_discos();
 
 
         },
