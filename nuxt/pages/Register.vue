@@ -82,7 +82,7 @@ export default {
                         alert(data.error);
                         return;
                     } else {
-                        alert('Usuario registrado correctamente');
+                        alert('Usuario registrado correctamente!');
                         this.$router.push('/');
                     }
 
