@@ -126,7 +126,7 @@ export default {
     },
     programarNotificacion() {
     const now = new Date();
-    const horaEspecifica = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 30, 0);
+    const horaEspecifica = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 40, 0);
     const tiempoRestante = horaEspecifica - now;
     
     if (tiempoRestante > 0) {
@@ -141,7 +141,7 @@ export default {
       body: 'Es hora de publicar tu foto!',
     };
 
-    new Notification('¡HORA DE BEREAL!', opcionesNotificacion);
+    new Notification('¡HORA DE BEREAL!', opcionesNotificacion).addEventListener;
   },
     initMapaDatosMapBox() {
       mapboxgl.accessToken =
