@@ -31,7 +31,7 @@
 
                     <p>Telefono: {{ pin_seleccionado.telefono }}</p>
 
-                    <p>Edad minma: {{ pin_seleccionado.minEdad }}</p>
+                    <p>Edad minima: {{ pin_seleccionado.minEdad }}</p>
 
 
                 </div>
