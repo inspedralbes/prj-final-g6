@@ -6,8 +6,8 @@
                 <li></li>
                 <li><a href="#">INICIO</a></li>
                 <li><a href="#">EXPLORAR</a></li>
-                <li><a href="/login">PERFIL</a></li>
-                <li><a href="/Register">REGISTER</a></li>
+                <li><a href="#">PERFIL</a></li>
+                
             </ul>
           
         </nav>
