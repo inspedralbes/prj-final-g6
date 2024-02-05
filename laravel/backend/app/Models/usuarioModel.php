@@ -10,7 +10,7 @@ class usuarioModel extends Model
     use HasFactory;
 
     protected $fillable
-        = ['nombre', 'password', 'email',];
+        = ['nombre', 'password', 'email','phone','birthdate'];
     protected $hidden = ['created_at', 'updated_at',];
     protected $table = 'usuarios';
 }

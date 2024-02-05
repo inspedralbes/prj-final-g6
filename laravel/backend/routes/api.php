@@ -19,11 +19,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //ruta para crear usuarios
-Route::post('/register', [App\Http\Controllers\usuarioController::class, 'register']);
+Route::post('/register', [App\Http\Controllers\userController::class, 'register']);
 //ruta para logear usuarios
-Route::post('/login', [App\Http\Controllers\usuarioController::class, 'login']);
+Route::post('/login', [App\Http\Controllers\userController::class, 'login']);
 //ruta para obtener todos los usuarios
-Route::get('/users', [App\Http\Controllers\usuarioController::class, 'getUsers']);
+Route::get('/users', [App\Http\Controllers\userController::class, 'getUsers']);
 // ruta para obtener todas las discotecas
 Route::get('/discotecas', [App\Http\Controllers\discoController::class, 'getDiscotecas']);
 // ruta para obtener una discoteca por id
