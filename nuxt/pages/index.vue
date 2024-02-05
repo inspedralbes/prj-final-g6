@@ -7,7 +7,7 @@
                 <li><nuxt-link to="/">INICIO</nuxt-link></li>
                 <li><nuxt-link to="/explorar">EXPLORAR</nuxt-link></li>
                 <li><nuxt-link to="/perfil">PERFIL</nuxt-link></li>
-            </ul> 
+            </ul>
         </nav>
         <div id="buscador"></div>
 
@@ -48,25 +48,16 @@
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
-
 export default {
     head() {
         return {
             link: [
-                {
-                    rel: 'stylesheet',
-                    href: 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css',
-                },
-                {
-                    rel: 'stylesheet',
-                    href: 'https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css'
-                },
-                {
-                    rel: 'stylesheet',
-                    href: 'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js'
-                },
-
-
+                { rel: 'stylesheet', href: 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css' },
+                { rel: 'stylesheet', href: 'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css' },
+            ],
+            script: [
+                { src: 'https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js', async: true },
+                { src: 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-markercluster/v1.0.2/mapbox-gl-markercluster.js', async: true },
             ],
         };
     },
@@ -82,21 +73,15 @@ export default {
         };
     },
     mounted() {
-
-
         this.initMapaDatosMapBox();
         this.fetchData();
 
         this.map.on('load', () => {
             this.crear_mostrar_pines_discos();
-            this.crear_mostrar_pin_barcelona();
-            this.establecer_visibilidad_segun_zoom_pines();
             this.añadir_popup_info_de_las_discos();
-
         });
-
-
     },
+
 
     methods: {
         async fetchData() {
@@ -132,27 +117,26 @@ export default {
                 center: [2.0947632393357907, 39.35567342431939],
                 zoom: 5,
             });
+
             var geocoder = new MapboxGeocoder({
                 accessToken: mapboxgl.accessToken,
                 mapboxgl: mapboxgl
             });
+
             this.map.addControl(geocoder);
             this.$nextTick(() => {
                 var geocoderElement = document.querySelector('.mapboxgl-ctrl-geocoder');
                 var searchBar = document.getElementById('buscador');
                 searchBar.appendChild(geocoderElement);
             });
-
         },
         crear_mostrar_pines_discos() {
 
-
-            if (this.map.getLayer('points')) {
-                this.map.removeLayer('points');
+            if (this.map.getSource('points')) {
+                this.map.removeSource('points');
             }
 
             const features = this.data.map((punto, index) => {
-
                 const coordinates = [punto.coordenadas[1], punto.coordenadas[0]];
 
                 return {
@@ -173,118 +157,98 @@ export default {
                 };
             });
 
-
-
             this.map.addSource('points', {
                 'type': 'geojson',
                 'data': {
                     'type': 'FeatureCollection',
                     'features': features
-                }
+                },
+                'cluster': true,
+                'clusterMaxZoom': 14,
+                'clusterRadius': 50
             });
 
             this.map.addLayer({
-                'id': 'points',
+                'id': 'clusters',
                 'type': 'circle',
                 'source': 'points',
-                'layout': {
-                    'visibility': 'visible'
-                },
+                'filter': ['has', 'point_count'],
                 'paint': {
-                    'circle-radius': 10,
-                    'circle-color': '#dfdfdf',
+                    'circle-color': [
+                        'step',
+                        ['get', 'point_count'],
+                        '#51bbd6',
+                        100,
+                        '#f1f075',
+                        750,
+                        '#f28cb1',
+                    ],
+                    'circle-radius': [
+                        'step',
+                        ['get', 'point_count'],
+                        20,
+                        100,
+                        30,
+                        750,
+                        40,
+                    ],
                 },
-                'minzoom': 10,
-                'maxzoom': 18,
             });
-
-            console.log('ACABAR DE CREAR PINES GENERALES 3/3');
-
-
-
-        },
-        crear_mostrar_pin_barcelona() {
-
 
             this.map.addLayer({
-                'id': 'barcelona-pin',
-                'type': 'circle',
-                'source': {
-                    'type': 'geojson',
-                    'data': {
-                        'type': 'FeatureCollection',
-                        'features': [{
-                            'type': 'Feature',
-                            'geometry': {
-                                'type': 'Point',
-                                'coordinates': [2.0947632393357907, 41.35567342431939],
-                            },
-                            'properties': {
-                                'id': 'barcelona-pin',
-
-                            }
-                        }]
-                    }
-                },
+                'id': 'cluster-count',
+                'type': 'symbol',
+                'source': 'points',
+                'filter': ['has', 'point_count'],
                 'layout': {
-                    'visibility': 'visible'
-
+                    'text-field': '{point_count_abbreviated}',
+                    'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                    'text-size': 12,
                 },
+            });
+
+            this.map.addLayer({
+                'id': 'unclustered-point',
+                'type': 'circle',
+                'source': 'points',
+                'filter': ['!', ['has', 'point_count']],
                 'paint': {
-                    'circle-radius': 15,
-        
-                    'circle-color': '#ff0000',
+                    'circle-color': '#11b4da',
+                    'circle-radius': 8,
+                    'circle-stroke-width': 1,
+                    'circle-stroke-color': '#fff',
                 },
             });
-
-
-
         },
-        establecer_visibilidad_segun_zoom_pines() {
-
-            const establecer_visibilidad_pines = () => {
-                const currentZoom = this.map.getZoom();
-                if (currentZoom >= 12) {
-                    this.map.setLayoutProperty('points', 'visibility', 'visible');
-                    this.map.setLayoutProperty('barcelona-pin', 'visibility', 'none');
-                } else {
-                    this.map.setLayoutProperty('points', 'visibility', 'none');
-                    this.map.setLayoutProperty('barcelona-pin', 'visibility', 'visible');
-                }
-            };
-
-            establecer_visibilidad_pines();
-
-
-            this.map.on('zoom', () => {
-                establecer_visibilidad_pines();
-            });
-
-
-            this.map.on('click', 'barcelona-pin', () => {
-
-                this.map.flyTo({
-                    center: [2.0947632393357907, 41.35567342431939],
-                    zoom: 12,
-                });
-
-                this.map.setLayoutProperty('barcelona-pin', 'visibility', 'none');
-            });
-        },
-
         añadir_popup_info_de_las_discos() {
-            this.map.on('click', 'points', (e) => {
+            this.map.on('click', 'clusters', (e) => {
+                const features = this.map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
+
+                if (features.length > 0) {
+                    const clusterId = features[0].properties.cluster_id;
+                    this.map.getSource('points').getClusterExpansionZoom(clusterId, (err, zoom) => {
+                        if (err) return;
+
+                        this.map.easeTo({
+                            center: features[0].geometry.coordinates,
+                            zoom: zoom,
+                        });
+                    });
+                }
+            });
+
+            this.map.on('click', 'unclustered-point', (e) => {
                 this.cerrarPopUp();
                 if (e.features && e.features.length > 0) {
                     const id = e.features[0].properties.id;
                     if (id !== undefined && id < this.data.length) {
-
                         this.punto_de_interes_seleccionado = true;
                         this.pin_seleccionado = this.data[id];
                     }
                 }
             });
         },
+
         cerrarPopUp() {
             this.punto_de_interes_seleccionado = null;
             this.pin_seleccionado = null;
@@ -343,7 +307,7 @@ footer {
 }
 
 .navbar {
- 
+
     width: 100%;
     height: 150px;
     background-color: var(--base);
@@ -357,7 +321,8 @@ footer {
     height: 100%;
     color: var(--blanco);
 }
-.navbar>ul>li{
+
+.navbar>ul>li {
     font-size: 60px;
 }
 
@@ -366,7 +331,7 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
 }
 
 .navbar ul li:hover,
@@ -494,7 +459,7 @@ footer {
     align-items: center;
     padding: 10px;
     color: var(--base);
-        
+
 }
 
 .mapboxgl-ctrl-geocoder .suggestions li {
@@ -507,9 +472,10 @@ footer {
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.87);
     margin: 14px;
     border-radius: 5px;
-  
+
 }
-.mapboxgl-ctrl-geocoder .suggestions li:hover{
+
+.mapboxgl-ctrl-geocoder .suggestions li:hover {
     color: var(--naranja);
     cursor: pointer;
 
@@ -520,9 +486,4 @@ footer {
     text-decoration: none;
     font-size: 0;
 }
-
-
-
-
-
 </style>
