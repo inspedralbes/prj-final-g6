@@ -69,6 +69,8 @@ export default {
             marker: null,
             data: [],
             icono_llevar_a_barcelona: null,
+            supercluster: null,
+            pin_seleccionado: null,
 
         };
     },
@@ -135,7 +137,7 @@ export default {
             }
 
             const features = this.data.map((punto, index) => {
-                const coordinates = [punto.coordenadas[1], punto.coordenadas[0]];
+                const coordinates = [punto.coordenadas.lng, punto.coordenadas.lat];
 
                 return {
                     'type': 'Feature',
