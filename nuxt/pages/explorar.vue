@@ -4,7 +4,7 @@
             <ul>
                 <li></li>
                 <li><nuxt-link to="/">INICIO</nuxt-link></li>
-                <li><nuxt-link to="/explorar">EXPLORAR</nuxt-link></li>
+                <li><nuxt-link to="/explorar">EXPLORe</nuxt-link></li>
                 <li><nuxt-link to="/perfil">PERFIL</nuxt-link></li>
             </ul>
         </nav>
