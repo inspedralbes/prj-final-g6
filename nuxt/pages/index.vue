@@ -83,28 +83,48 @@ export default {
       this.añadir_popup_info_de_las_discos();
     });
 
-    //Localizacion y notificaicones
+    //Permisos + notificacio per ubicació
     Notification.requestPermission().then((permission) => {
       if (permission === "granted") {
         console.log("Permisos aceptados");
+
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const { latitude, longitude } = position.coords;
+              console.log("Ubicación del usuario:", latitude, longitude);
+
+              const coordenada1 = {
+                //pedralbes
+                latitude: 41.386181, 
+                longitude: 2.106058, 
+              };
+
+              const coordenada2 = {
+                //pacha
+                latitude: 41.385647, 
+                longitude: 2.197256, 
+              };
+              if (
+                this.estaCercaDeCoordenada({ latitude, longitude }, coordenada1)
+              ) {
+                //pedralbes
+                this.programarNotificacion(10, 23);
+              } else if (
+                //pacha
+                this.estaCercaDeCoordenada({ latitude, longitude }, coordenada2)
+              ) {
+                this.programarNotificacion(10, 22);
+              } 
+            },
+            (error) => {
+              console.error("Error al obtener la ubicación:", error.message);
+            }
+          );
+        } 
       }
     });
-
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          console.log("Ubicación del usuario:", latitude, longitude);
-        },
-        (error) => {
-          console.error("Error al obtener la ubicación:", error.message);
-        }
-      );
-    } else {
-      console.error("La geolocalización no es compatible en este navegador.");
-    }
   },
-
   methods: {
     async fetchData() {
       const response = await fetch("http://localhost:8000/api/discotecas");
@@ -124,25 +144,59 @@ export default {
         };
       });
     },
-    programarNotificacion() {
-    const now = new Date();
-    const horaEspecifica = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 40, 0);
-    const tiempoRestante = horaEspecifica - now;
-    
-    if (tiempoRestante > 0) {
-      setTimeout(() => {
-        this.enviarNotificacion();
-      }, tiempoRestante);
-    }
-  },
 
-  enviarNotificacion() {
-    const opcionesNotificacion = {
-      body: 'Es hora de publicar tu foto!',
-    };
+    estaCercaDeCoordenada(coordenadasUsuario, coordenadaObjetivo) {
+      const radioTierra = 6371;
+      const lat1 = coordenadasUsuario.latitude;
+      const lon1 = coordenadasUsuario.longitude;
+      const lat2 = coordenadaObjetivo.latitude;
+      const lon2 = coordenadaObjetivo.longitude;
 
-    new Notification('¡HORA DE BEREAL!', opcionesNotificacion).addEventListener;
-  },
+      const dLat = (lat2 - lat1) * (Math.PI / 180);
+      const dLon = (lon2 - lon1) * (Math.PI / 180);
+
+      //Formula per encontrar l'ubicació en coordenades
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * (Math.PI / 180)) *
+          Math.cos(lat2 * (Math.PI / 180)) *
+          Math.sin(dLon / 2) *
+          Math.sin(dLon / 2);
+
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const distancia = radioTierra * c;
+
+      const umbralDistancia = 5; // Distancia en km
+      return distancia <= umbralDistancia;
+    },
+
+    programarNotificacion(hora, minuts) {
+      const now = new Date();
+      const horaEspecifica = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        hora,
+        minuts,
+        0
+      );
+      const tiempoRestante = horaEspecifica - now;
+
+      if (tiempoRestante > 0) {
+        setTimeout(() => {
+          this.enviarNotificacion();
+        }, tiempoRestante);
+      }
+    },
+
+    enviarNotificacion() {
+      const opcionesNotificacion = {
+        body: "Es hora de publicar tu foto!",
+      };
+
+      new Notification("¡HORA DE BEREAL!", opcionesNotificacion);
+    },
+
     initMapaDatosMapBox() {
       mapboxgl.accessToken =
         "pk.eyJ1IjoiYTIyam9zbGFyZmVyIiwiYSI6ImNsczIwdDY5YTBldncyc21rbmI4cnVjY3oifQ.mWjSoIuuwJmMG0EFCU_gEA";
