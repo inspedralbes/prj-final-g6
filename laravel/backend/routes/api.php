@@ -40,3 +40,26 @@ Route::get('/discotecas/nombre/{nombre_local}', [App\Http\Controllers\discoContr
 Route::get('/discotecas/edad/{minEdad}', [App\Http\Controllers\discoController::class, 'getDiscotecasByAge']);
 // ruta para obtener las discotecas por horario
 Route::get('/discotecas/horario/{horario}', [App\Http\Controllers\discoController::class, 'getDiscotecasBySchedule']);
+
+
+
+// review controller functions
+
+// ruta para crear una review
+Route::post('/reviews', [App\Http\Controllers\reviewController::class, 'create']);
+// ruta para obtener todas las reviews
+Route::get('/reviews/{id}', [App\Http\Controllers\reviewController::class, 'getReviews']);
+// ruta para obtener una review por id
+Route::get('/review/{id}', [App\Http\Controllers\reviewController::class, 'getReview']);
+// ruta para actualizar una review
+Route::put('/reviews/{id}', [App\Http\Controllers\reviewController::class, 'update']);
+// ruta para borrar una review
+Route::delete('/reviews/{id}', [App\Http\Controllers\reviewController::class, 'delete']);
+// ruta para obtener las reviews por id de usuario
+Route::get('/reviews/user/{id}', [App\Http\Controllers\reviewController::class, 'getReviewsByUser']);
+// ruta para obtener las reviews por id de discoteca
+Route::get('/reviews/disco/{id}', [App\Http\Controllers\reviewController::class, 'getReviewsByDisco']);
+// ruta para obtener las reviews por puntuacion
+Route::get('/reviews/puntuacion/{puntuacion}', [App\Http\Controllers\reviewController::class, 'getReviewsByPuntuacion']);
+// ruta para obtener todas las reviews de un usuario
+Route::get('/reviews/user/{id}', [App\Http\Controllers\reviewController::class, 'getReviewsByUser']);
