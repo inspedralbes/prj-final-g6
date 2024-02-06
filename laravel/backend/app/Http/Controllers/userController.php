@@ -94,4 +94,15 @@ class userController extends Controller
             "msg" => "Usuario no autenticado",
         ], 401);
     }
+    public function getUserProfile()
+    {
+        $user = Auth::user();
+
+        return response()->json([
+            "status" => 1,
+            "msg" => "Perfil del usuario",
+            "data" => $user,
+        ]);
+    }
+
 }

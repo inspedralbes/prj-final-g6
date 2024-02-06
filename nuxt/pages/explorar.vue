@@ -6,6 +6,7 @@
                 <li><nuxt-link to="/">INICIO</nuxt-link></li>
                 <li><nuxt-link to="/explorar">EXPLORAR</nuxt-link></li>
                 <li><nuxt-link to="/perfil">PERFIL</nuxt-link></li>
+                <Perfil></Perfil>
             </ul>
         </nav>
         <div v-if="data.length > 0">
@@ -32,6 +33,8 @@
 </template>
   
 <script>
+import Perfil from './perfil.vue';
+
 export default {
     data() {
         return {
@@ -49,7 +52,6 @@ export default {
         async fetchData() {
             const response = await fetch('http://localhost:8000/api/discotecas');
             const data = await response.json();
-
             this.data = data.map((discoteca) => {
                 return {
                     id: discoteca.id,
@@ -74,6 +76,7 @@ export default {
     mounted() {
         this.fetchData();
     },
+    components: { Perfil }
 };
 </script>
 

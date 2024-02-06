@@ -7,7 +7,9 @@
                 <li><nuxt-link to="/">INICIO</nuxt-link></li>
                 <li><nuxt-link to="/explorar">EXPLORAR</nuxt-link></li>
                 <li><nuxt-link to="/perfil">PERFIL</nuxt-link></li>
+                <perfilbutton></perfilbutton>
             </ul>
+            
         </nav>
         <div id="buscador"></div>
 
@@ -47,8 +49,11 @@
 <script>
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-
+import perfilbutton from '~/components/perfilbutton.vue';
 export default {
+    components: {
+        perfilbutton,
+    },
     head() {
         return {
             link: [
