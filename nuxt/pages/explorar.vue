@@ -23,7 +23,7 @@
                 <button @click="nextItem" class="arrow right-arrow">&gt;</button>
             </div>
         </div>
-        <h3 v-else>Loading...</h3>
+
     </div>
 
     <footer>
