@@ -6,7 +6,7 @@
                 <li></li>
                 <li><nuxt-link to="/">INICIO</nuxt-link></li>
                 <li><nuxt-link to="/explorar">EXPLORAR</nuxt-link></li>
-                <li><nuxt-link to="/perfil">PERFIL</nuxt-link></li>
+                <li><nuxt-link to="/">PERFIL</nuxt-link></li>
             </ul>
         </nav>
         <div id="buscador"></div>
