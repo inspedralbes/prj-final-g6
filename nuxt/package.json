@@ -16,8 +16,10 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-geocoder": "^5.0.2",
     "dotenv": "^16.4.1",
     "leaflet": "^1.9.4",
+    "mapbox-gl": "^3.1.2",
     "vue2-google-maps": "^0.10.7"
   }
 }

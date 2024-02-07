@@ -1,9 +1,8 @@
-
 export default class Apiservices {
 
     private baseUrl = 'http://localhost:1337';
 
-    private token: string = '6775fbd9a52e3b01566cbacb5785265c1352c5277e7bc25b896fcc915d54b6e8e39415308f80402f7cd8cf1189ae8114dbd8c858def0b9c02ff68e56f455432f3bb431d14340a37574a61333787680f270e8e51dff7e187912732354f0e0b4285b03b2373ff8232c3df84b40d4399f6852df82b3a071c675db881c3a9bdcbd77';
+    private token: string = '79a584043d6a67545e5d94912cf3d58c64c99aee00a9235f34a567ce84c41ea3ef9219fbf15743ec2f12f83afe1fabfd17962a70c65e519c3c3debe48e73442cb46f8f47ebad967f812ad36e4b1bdbc877431b4903a972c2c2123aae0141c3d573ced74c7767f676b8b5d8689445224664dad510480c6d468477e5624c310d9a';
 
     private async fetchCall(url: string, method: string, body: any) {
         const response = await fetch(`${url}`, {
@@ -16,11 +15,19 @@ export default class Apiservices {
         });
         return response.json();
     }
-    async getLlibres() {
-
-        return await this.fetchCall(`${this.baseUrl}/api/libros?populate=*`, 'GET');
+    async getDiscotecas() {
+        return await this.fetchCall(`${this.baseUrl}/api/Discotecas?populate=*`, 'GET');
     }
+
+    async createDiscoteca(infoDiscoteca) {
+        return await this.fetchCall(`${this.baseUrl}/api/Discotecas`, 'POST', infoDiscoteca);
+      }
+
+    async deleteDiscoteca(id) {
+        return await this.fetchCall(`${this.baseUrl}/api/Discotecas/${id}`, 'DELETE');
+      }
 
 }
 
 export const api = new Apiservices();
+
