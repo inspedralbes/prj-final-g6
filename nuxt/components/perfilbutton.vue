@@ -22,9 +22,9 @@
           </li>
           
           <li class="nav-list__item">
-            <a href="/perfil" class="nav-list__url">
-                            <svg class="icon nav-list__icon"><use xlink:href="#icon-user"></use></svg>
-            </a>
+        <a href="/perfil" class="nav-list__url">
+          <svg class="icon nav-list__icon"><use xlink:href="#icon-user"></use></svg>
+        </a>
           </li>
         </ul>
       </div>
@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import perfil from '../pages/perfil.vue';
+
 export default {
 
 }
@@ -90,6 +92,7 @@ body {
     position: relative;
     right: -12%;
     top: 9px;
+    margin-right: 62px;
 
   
   @media screen and (max-height: 800px) {

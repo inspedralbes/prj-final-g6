@@ -23,7 +23,7 @@ Route::post('/register', [App\Http\Controllers\userController::class, 'register'
 //ruta para logear usuarios
 Route::post('/login', [App\Http\Controllers\userController::class, 'login']);
 //ruta para obtener todos los usuarios
-Route::middleware('auth:sanctum')->get('/user-profile', [App\Http\Controllers\userController::class, 'getUserProfile']);
+Route::middleware('auth:sanctum')->put('/user-profile', [App\Http\Controllers\userController::class, 'updateUserProfile']);
 //ruta para obtener todos los usuarios
 Route::get('/users', [App\Http\Controllers\userController::class, 'getUsers']);
 // ruta para obtener todas las discotecas

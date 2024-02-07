@@ -36,7 +36,7 @@ export default {
     name: 'RegisterScreen',
     data() {
         return {
-            nombre: '', 
+            nombre: '',
             email: '',
             password: '',
             password2: '', // Add this line
@@ -55,11 +55,11 @@ export default {
                 },
                 body: JSON.stringify({
                     nombre: this.nombre.trim(),
-                email: this.email.trim(),
-                password: this.password.trim(),
-                birthdate: this.birthdate, // Include birthdate
-                phone: this.phone, // Include phone
-                password2: this.password2, // Include password2
+                    email: this.email.trim(),
+                    password: this.password.trim(),
+                    birthdate: this.birthdate, // Include birthdate
+                    phone: this.phone, // Include phone
+                    password2: this.password2, // Include password2
                 }),
             })
                 .then(response => {
@@ -79,11 +79,22 @@ export default {
                 .then(data => {
 
                     if (data.error) {
+                        localStorage.setItem('authToken', data.access_token);
+                        // Almacena solo la información necesaria del usuario
+                        localStorage.setItem('user', JSON.stringify({
+                            nombre: data.user.nombre,
+                            email: data.user.email,
+                        }));
+                        this.$router.push('/perfil');
                         alert(data.error);
-                        return;
                     } else {
                         alert('Usuario registrado correctamente!');
-                        this.$router.push('/');
+                        // Almacena solo la información necesaria del usuario
+                        localStorage.setItem('user', JSON.stringify({
+                            nombre: this.nombre.trim(),
+                            email: this.email.trim(),
+                        }));
+                        //this.$router.push('/');
                     }
 
                 })
@@ -199,4 +210,5 @@ export default {
 .checkbox label {
     font-size: 16px;
     color: #333;
-}</style>
+}
+</style>

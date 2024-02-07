@@ -7,6 +7,7 @@
                 <li><nuxt-link to="/">INICIO</nuxt-link></li>
                 <li><nuxt-link to="/explorar">EXPLORAR</nuxt-link></li>
                 <li><nuxt-link to="/perfil">PERFIL</nuxt-link></li>
+                <li><nuxt-link to="/login"></nuxt-link></li>
                 <perfilbutton></perfilbutton>
             </ul>
             
@@ -294,7 +295,7 @@ export default {
 
 footer {
     position: absolute;
-    bottom: 0;
+    margin-bottom: 0;
     width: 100%;
     height: 50px;
     background-color: var(--base);

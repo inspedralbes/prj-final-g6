@@ -64,7 +64,7 @@ export default {
 
                     if (data.status === 1) {
                         localStorage.setItem('authToken', data.access_token);
-                        this.$router.push('/');
+                        
                     } else {
                         alert('Inicio de sesión fallido. Verifica tus credenciales.');
                     }
@@ -81,7 +81,7 @@ export default {
 };
 </script>
   
-<style>
+<style scoped>
 * {
     margin: 0;
     padding: 0;

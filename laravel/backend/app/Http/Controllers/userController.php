@@ -49,7 +49,7 @@ class userController extends Controller
             if (Hash::check($request->password, $user->password)) {
               
                 $token = $user->createToken("auth_token")->plainTextToken;
-
+                
                 //si esta todo bien
                 return response()->json([
                     "status" => 1,
@@ -94,15 +94,34 @@ class userController extends Controller
             "msg" => "Usuario no autenticado",
         ], 401);
     }
-    public function getUserProfile()
+    public function updateUserProfile(Request $request)
     {
-        $user = Auth::user();
-
+        $user = auth()->user();
+    
+        // Aquí debes agregar la lógica para actualizar el perfil del usuario
+        //Puedes utilizar  $request->input('name') y $request->input('email');
+       
+        
+        // Ejemplo de actualización del nombre del usuario
+        $user->name = $request->input('name');
+        $user->save();
+    
         return response()->json([
             "status" => 1,
-            "msg" => "Perfil del usuario",
+            "msg" => "Perfil del usuario actualizado exitosamente",
             "data" => $user,
         ]);
     }
+    public function getUsers()
+    {
+        $users = usuarioModel::all();
+        return response()->json([
+            "status" => 1,
+            "msg" => "Lista de usuarios",
+            "data" => $users
+        ]);
+    }
+
+
 
 }
