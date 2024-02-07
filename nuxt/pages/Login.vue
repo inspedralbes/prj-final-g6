@@ -38,7 +38,6 @@
 
 import { setAuthenticated } from '../auth.js'; 
 export default {
-  
 
     name: 'LoginScreen',
     data() {
