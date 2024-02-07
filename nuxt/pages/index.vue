@@ -20,13 +20,14 @@
                     <div class="card-closer" @click="cerrarPopUp">X</div>
                 </div>
                 <div class="card-body">
-                    <!-- <img :src="pin_seleccionado.imgUrl" alt="imagen de la discoteca" style="width: 100%; height: 200px; object-fit: cover;"> -->
-
+                    <img :src="'https://via.placeholder.com/200'" alt="imagen de la discoteca" style="width: 100%; height: 200px; object-fit: cover;">
+                    
                     <p>Sobre el local: {{ pin_seleccionado.descripcion }}</p>
                     <p>Horario: {{ pin_seleccionado.horario }}</p>
                     <p>Telefono: {{ pin_seleccionado.telefono }}</p>
                     <p>Edad minima: {{ pin_seleccionado.minEdad }}</p>
-                    <btncreatereview :id_local="pin_seleccionado.id"></btncreatereview>
+                    <!-- < -->
+                    <Nuxt-link :to="'/Crear-Review/'+pin_seleccionado.id">Ver más</nuxt-link>
                 </div>
             </div>
         </div>
@@ -44,11 +45,9 @@
 <script>
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import btncreatereview from '~/components/btncreatereview.vue';
+
 export default {
-    components: {
-        btncreatereview,
-    },
+  
 
     head() {
         return {
@@ -280,14 +279,16 @@ export default {
             });
 
             this.map.on('click', 'unclustered-point', (e) => {
-                this.cerrarPopUp();
+         
                 if (e.features && e.features.length > 0) {
                     const id = e.features[0].properties.id;
+             
                     if (id !== undefined && id < this.data.length) {
                         this.punto_de_interes_seleccionado = true;
                         this.pin_seleccionado = this.data[id];
                     }
                 }
+               
             });
         },
         cerrarPopUp() {
@@ -360,7 +361,9 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&display=swap');
 
 
-
+*{
+    overflow: hidden;
+}
 
 :root {
     --base: hsl(0, 5%, 16%);

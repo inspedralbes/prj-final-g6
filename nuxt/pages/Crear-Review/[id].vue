@@ -1,7 +1,6 @@
 <template>
     <div>
-        <p>{{ this.$store.state.id_local }}</p>
-
+        AA
     </div>
 </template>
 
