@@ -5,12 +5,7 @@
                 <img class="background-image" src="../public/img/images.jpg" alt="Imagen de fondo">
                 <img class="foreground-image" src="../public/img/3128-earth.png" alt="Imagen superpuesta">
             </form>
-            <div v-if="isAuthenticated">
-                AAAAAAAAAAAAAAAAAAAAAAAA
-            </div>
-            <div v-else>
-                BBBBBBBBBBBBBBBBBBBBBBBB
-            </div>
+
         </div>
         <div class="right">
             <form @submit.prevent="login" class="form">
@@ -34,9 +29,10 @@
         </div>
     </div>
 </template>
+
 <script>
 
-import { setAuthenticated } from '../auth.js'; 
+
 export default {
 
     name: 'LoginScreen',
@@ -45,6 +41,7 @@ export default {
             email: '',
             password: '',
             isLoading: false,
+
         };
     },
     methods: {
@@ -85,12 +82,9 @@ export default {
                     this.isLoading = false;
                 });
         },
-    },
-    computed: {
-        isAuthenticated() {
-            return this.$store.getters['auth/isAuthenticated'];
-        },
-    },
+    }
+
+
 };
 </script>
   

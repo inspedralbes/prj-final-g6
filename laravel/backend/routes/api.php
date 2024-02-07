@@ -14,8 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', 'AuthController@login');
-Route::post('/register', 'AuthController@register');
+
+Route::post('/check-authentication', [App\Http\Controllers\authController::class, 'checkAuthentication']);
+//ruta para crear usuarios
+Route::post('/register', [App\Http\Controllers\userController::class, 'register']);
+//ruta para logear usuarios
+Route::post('/login', [App\Http\Controllers\userController::class, 'login']);
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -28,11 +33,7 @@ Route::middleware('auth:sanctum')->get('/check-authentication', function () {
 });
 
 
-Route::post('/check-authentication', [App\Http\Controllers\authController::class, 'checkAuthentication']);
-//ruta para crear usuarios
-Route::post('/register', [App\Http\Controllers\userController::class, 'register']);
-//ruta para logear usuarios
-Route::post('/login', [App\Http\Controllers\userController::class, 'login']);
+
 //ruta para obtener todos los usuarios
 Route::get('/users', [App\Http\Controllers\userController::class, 'getUsers']);
 // ruta para obtener todas las discotecas
