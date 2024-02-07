@@ -72,7 +72,7 @@ export default {
     };
   },
   mounted() {
-    this.programarNotificacion();
+    this.programarNotificacio();
     this.initMapaDatosMapBox();
     this.fetchData();
 
@@ -106,15 +106,15 @@ export default {
                 longitude: 2.197256, 
               };
               if (
-                this.estaCercaDeCoordenada({ latitude, longitude }, coordenada1)
+                this.personesAprop({ latitude, longitude }, coordenada1)
               ) {
                 //pedralbes
-                this.programarNotificacion(10, 23);
+                this.programarNotificacio(10, 23);
               } else if (
                 //pacha
-                this.estaCercaDeCoordenada({ latitude, longitude }, coordenada2)
+                this.personesAprop({ latitude, longitude }, coordenada2)
               ) {
-                this.programarNotificacion(10, 22);
+                this.programarNotificacio(10, 22);
               } 
             },
             (error) => {
@@ -145,12 +145,12 @@ export default {
       });
     },
 
-    estaCercaDeCoordenada(coordenadasUsuario, coordenadaObjetivo) {
-      const radioTierra = 6371;
-      const lat1 = coordenadasUsuario.latitude;
-      const lon1 = coordenadasUsuario.longitude;
-      const lat2 = coordenadaObjetivo.latitude;
-      const lon2 = coordenadaObjetivo.longitude;
+    personesAprop(coordenadesUsuari, coordenadaObjetiu) {
+      const radiTerra = 6371;
+      const lat1 = coordenadesUsuari.latitude;
+      const lon1 = coordenadesUsuari.longitude;
+      const lat2 = coordenadaObjetiu.latitude;
+      const lon2 = coordenadaObjetiu.longitude;
 
       const dLat = (lat2 - lat1) * (Math.PI / 180);
       const dLon = (lon2 - lon1) * (Math.PI / 180);
@@ -164,13 +164,13 @@ export default {
           Math.sin(dLon / 2);
 
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      const distancia = radioTierra * c;
+      const distancia = radiTerra * c;
 
-      const umbralDistancia = 5; // Distancia en km
-      return distancia <= umbralDistancia;
+      const maxDistancia = 5; // Distancia en km
+      return distancia <= maxDistancia;
     },
 
-    programarNotificacion(hora, minuts) {
+    programarNotificacio(hora, minuts) {
       const now = new Date();
       const horaEspecifica = new Date(
         now.getFullYear(),
@@ -180,16 +180,16 @@ export default {
         minuts,
         0
       );
-      const tiempoRestante = horaEspecifica - now;
+      const tempsRestant = horaEspecifica - now;
 
-      if (tiempoRestante > 0) {
+      if (tempsRestant > 0) {
         setTimeout(() => {
-          this.enviarNotificacion();
-        }, tiempoRestante);
+          this.enviarNotificacio();
+        }, tempsRestant);
       }
     },
 
-    enviarNotificacion() {
+    enviarNotificacio() {
       const opcionesNotificacion = {
         body: "Es hora de publicar tu foto!",
       };
