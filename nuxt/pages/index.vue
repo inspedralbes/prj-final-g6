@@ -25,8 +25,8 @@
                     <p>Sobre el local: {{ pin_seleccionado.descripcion }}</p>
                     <p>Horario: {{ pin_seleccionado.horario }}</p>
                     <p>Telefono: {{ pin_seleccionado.telefono }}</p>
-                    <p>Edad minima: {{ pin_seleccionado.minEdad }}</p>
-                    <btncreatereview :id_local="pin_seleccionado.id"></btncreatereview>
+                    <p>Edad minima: {{ pin_seleccionado.minEdad }}</p>                
+                    <NuxtLink :to="'/Crear-Review/'+pin_seleccionado.id" class="btn-create-review">Crear Reseña</NuxtLink>
                 </div>
             </div>
         </div>
@@ -44,11 +44,8 @@
 <script>
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import btncreatereview from '~/components/btncreatereview.vue';
+
 export default {
-    components: {
-        btncreatereview,
-    },
 
     head() {
         return {
@@ -356,10 +353,26 @@ export default {
 
 
 <style>
+
+
+
 @import url('https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css');
 @import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&display=swap');
 
+.btn-create-review {
+    background-color: var(--verde);
+    display: flex;
+    border-radius: 8px;
+    color: var(--blanco);
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    text-align: center;
+    width: 100%;
+    justify-content: center;
+    text-decoration: none;
+    margin-top: 40px;
 
+}
 
 
 :root {
