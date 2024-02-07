@@ -36,8 +36,6 @@
     </div>
 
     <!-- show console log message if user is auth  -->
-
- 
 </template>
 
   
@@ -46,12 +44,12 @@
 <script>
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-import  btncreatereview from '~/components/btncreatereview.vue';
+import btncreatereview from '~/components/btncreatereview.vue';
 export default {
     components: {
         btncreatereview,
     },
-    
+
     head() {
         return {
             link: [
@@ -80,9 +78,49 @@ export default {
     mounted() {
         this.fetchData();
         this.initMapaDatosMapBox();
-        
-    },
 
+        Notification.requestPermission().then((permission) => {
+            if (permission === "granted") {
+                console.log("Permisos aceptados");
+
+                if ("geolocation" in navigator) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const { latitude, longitude } = position.coords;
+                            console.log("Ubicación del usuario:", latitude, longitude);
+
+                            const coordenada1 = {
+                                //pedralbes
+                                latitude: 41.386181,
+                                longitude: 2.106058,
+                            };
+
+                            const coordenada2 = {
+                                //pacha
+                                latitude: 41.385647,
+                                longitude: 2.197256,
+                            };
+                            if (
+                                this.personesAprop({ latitude, longitude }, coordenada1)
+                            ) {
+                                //pedralbes
+                                this.programarNotificacio(9, 33);
+                            } else if (
+                                //pacha
+                                this.personesAprop({ latitude, longitude }, coordenada2)
+                            ) {
+                                this.programarNotificacio(10, 22);
+                            }
+                        },
+                        (error) => {
+                            console.error("Error al obtener la ubicación:", error.message);
+                        }
+                    );
+                }
+            }
+        });
+
+    },
 
     methods: {
         async fetchData() {
@@ -260,6 +298,56 @@ export default {
             this.arr_puntos_de_interes.forEach(marker => marker.remove());
             this.arr_puntos_de_interes = [];
         },
+        personesAprop(coordenadesUsuari, coordenadaObjetiu) {
+            const radiTerra = 6371;
+            const lat1 = coordenadesUsuari.latitude;
+            const lon1 = coordenadesUsuari.longitude;
+            const lat2 = coordenadaObjetiu.latitude;
+            const lon2 = coordenadaObjetiu.longitude;
+
+            const dLat = (lat2 - lat1) * (Math.PI / 180);
+            const dLon = (lon2 - lon1) * (Math.PI / 180);
+
+            //Formula per encontrar l'ubicació en coordenades
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * (Math.PI / 180)) *
+                Math.cos(lat2 * (Math.PI / 180)) *
+                Math.sin(dLon / 2) *
+                Math.sin(dLon / 2);
+
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distancia = radiTerra * c;
+
+            const maxDistancia = 5; // Distancia en km
+            return distancia <= maxDistancia;
+        },
+        programarNotificacio(hora, minuts) {
+            const now = new Date();
+            const horaEspecifica = new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate(),
+                hora,
+                minuts,
+                0
+            );
+            const tempsRestant = horaEspecifica - now;
+
+            if (tempsRestant > 0) {
+                setTimeout(() => {
+                    this.enviarNotificacio();
+                }, tempsRestant);
+            }
+        },
+        enviarNotificacio() {
+            const opcionesNotificacion = {
+                body: "Es hora de publicar tu foto!",
+            };
+
+            new Notification("¡HORA DE BEREAL!", opcionesNotificacion);
+        },
+
     },
 };
 

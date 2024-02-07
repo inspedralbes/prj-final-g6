@@ -35,7 +35,11 @@
     </div>
 </template>
 <script>
+
+import { setAuthenticated } from '../auth.js'; 
 export default {
+  
+
     name: 'LoginScreen',
     data() {
         return {
