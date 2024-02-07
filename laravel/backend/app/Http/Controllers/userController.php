@@ -7,70 +7,65 @@ use Illuminate\Http\Request;
 use App\Models\usuarioModel;
 use Illuminate\Support\Facades\Hash;
 use \Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Auth;
 
 class userController extends Controller
 {
     public function register(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required',
-            'password2' => 'required|same:password',
-            'phone' => 'required',
-            'birthdate' => 'required',
+        $validator = usuarioModel::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|unique:users,email',
+            'password' => 'required|string|min:6|confirmed',
+            'password_confirmation' => 'required|string|min:6',
+            'phone' => 'required|string|max:255',
+            'birthdate' => 'required|date',
+
         ]);
 
-        $user = new usuarioModel();
-        $user->nombre = $request->nombre;
-        $user->email = $request->email;
-        $user->phone = $request->phone;
-        $user->birthdate = $request->birthdate;
-        $user->password = Hash::make($request->password);
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
 
-        $user->save();
+        $user = usuarioModel::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'phone' => $request->phone,
+            'birthdate' => $request->birthdate,
 
-        return response()->json([
-            "status" => 1,
-            "msg" => "Registro exitoso",
         ]);
+
+        $token = $user->createToken('authToken')->plainTextToken;
+
+        return response(['user' => $user, 'token' => $token]);
     }
 
     public function login(Request $request)
     {
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
-
+            'password' => 'required',
         ]);
-        $user = usuarioModel::where("email", "=", $request->email)->first();
 
-        if (isset($user->id)) {
-            if (Hash::check($request->password, $user->password)) {
-              
-                $token = $user->createToken("auth_token")->plainTextToken;
-
-                //si esta todo bien
-                return response()->json([
-                    "status" => 1,
-                    "msg" => "Usuario logeado  exitosamente",
-                    "access_token" => $token
-
-                ]);
-            } else {
-                return response()->json([
-                    "status" => 0,
-                    "msg" => "La password es incorrecta",
-
-                ], 404);
-            }
-        } else {
-            return response()->json([
-                "status" => 0,
-                "msg" => "Usuario no registrado",
-            ], 404);
+        if (!Auth::attempt($credentials)) {
+            return response(['message' => 'Invalid credentials'], 401);
         }
+
+        $user = $request->user();
+        $token = $user->createToken('authToken')->plainTextToken;
+
+        return response(['user' => $user, 'token' => $token]);
     }
+
+    public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+
+        return response(['message' => 'Logged out']);
+    }
+
+    
     public function userProfile()
     {
         return response()->json([
@@ -79,19 +74,5 @@ class userController extends Controller
             "data" => auth()->user()
         ]);
     }
-    public function logout()
-    {
-        if (auth()->check()) {
-            auth()->user()->tokens()->delete();
-            return response()->json([
-                "status" => 1,
-                "msg" => "Logout exitoso",
-            ]);
-        }
-
-        return response()->json([
-            "status" => 0,
-            "msg" => "Usuario no autenticado",
-        ], 401);
-    }
+ 
 }

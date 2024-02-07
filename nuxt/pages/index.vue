@@ -18,20 +18,15 @@
                 <div class="card-header">
                     <h3>{{ pin_seleccionado.titulo }}</h3>
                     <div class="card-closer" @click="cerrarPopUp">X</div>
-
                 </div>
                 <div class="card-body">
                     <!-- <img :src="pin_seleccionado.imgUrl" alt="imagen de la discoteca" style="width: 100%; height: 200px; object-fit: cover;"> -->
 
                     <p>Sobre el local: {{ pin_seleccionado.descripcion }}</p>
-
                     <p>Horario: {{ pin_seleccionado.horario }}</p>
-
                     <p>Telefono: {{ pin_seleccionado.telefono }}</p>
-
                     <p>Edad minima: {{ pin_seleccionado.minEdad }}</p>
-
-
+                    <btncreatereview :id_local="pin_seleccionado.id"></btncreatereview>
                 </div>
             </div>
         </div>
@@ -39,6 +34,10 @@
 
         </footer>
     </div>
+
+    <!-- show console log message if user is auth  -->
+
+ 
 </template>
 
   
@@ -47,8 +46,12 @@
 <script>
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
-
+import  btncreatereview from '~/components/btncreatereview.vue';
 export default {
+    components: {
+        btncreatereview,
+    },
+    
     head() {
         return {
             link: [
@@ -75,8 +78,9 @@ export default {
         };
     },
     mounted() {
-        this.initMapaDatosMapBox();
         this.fetchData();
+        this.initMapaDatosMapBox();
+        
     },
 
 

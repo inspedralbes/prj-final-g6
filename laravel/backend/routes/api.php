@@ -14,10 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/login', 'AuthController@login');
+Route::post('/register', 'AuthController@register');
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:sanctum')->get('/check-authentication', function () {
+    $user = Auth::user();
+
+    return response(['authenticated' => $user !== null, 'user' => $user]);
+});
+
+
+Route::post('/check-authentication', [App\Http\Controllers\authController::class, 'checkAuthentication']);
 //ruta para crear usuarios
 Route::post('/register', [App\Http\Controllers\userController::class, 'register']);
 //ruta para logear usuarios
@@ -42,9 +53,6 @@ Route::get('/discotecas/edad/{minEdad}', [App\Http\Controllers\discoController::
 Route::get('/discotecas/horario/{horario}', [App\Http\Controllers\discoController::class, 'getDiscotecasBySchedule']);
 
 
-
-// review controller functions
-
 // ruta para crear una review
 Route::post('/reviews', [App\Http\Controllers\reviewController::class, 'create']);
 // ruta para obtener todas las reviews
@@ -61,5 +69,3 @@ Route::get('/reviews/user/{id}', [App\Http\Controllers\reviewController::class, 
 Route::get('/reviews/disco/{id}', [App\Http\Controllers\reviewController::class, 'getReviewsByDisco']);
 // ruta para obtener las reviews por puntuacion
 Route::get('/reviews/puntuacion/{puntuacion}', [App\Http\Controllers\reviewController::class, 'getReviewsByPuntuacion']);
-// ruta para obtener todas las reviews de un usuario
-Route::get('/reviews/user/{id}', [App\Http\Controllers\reviewController::class, 'getReviewsByUser']);

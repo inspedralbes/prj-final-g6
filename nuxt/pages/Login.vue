@@ -5,7 +5,12 @@
                 <img class="background-image" src="../public/img/images.jpg" alt="Imagen de fondo">
                 <img class="foreground-image" src="../public/img/3128-earth.png" alt="Imagen superpuesta">
             </form>
-
+            <div v-if="isAuthenticated">
+                AAAAAAAAAAAAAAAAAAAAAAAA
+            </div>
+            <div v-else>
+                BBBBBBBBBBBBBBBBBBBBBBBB
+            </div>
         </div>
         <div class="right">
             <form @submit.prevent="login" class="form">
@@ -78,10 +83,15 @@ export default {
                 });
         },
     },
+    computed: {
+        isAuthenticated() {
+            return this.$store.getters['auth/isAuthenticated'];
+        },
+    },
 };
 </script>
   
-<style>
+<style scoped>
 * {
     margin: 0;
     padding: 0;
@@ -186,4 +196,5 @@ export default {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-}</style>
+}
+</style>
