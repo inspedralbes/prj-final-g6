@@ -1,4 +1,8 @@
 <template>
+    <div>
+    <div v-if="loading" class="loader">
+      <div class="spinner"></div>
+    </div>
     <div class="container">
 
         <nav class="navbar">
@@ -10,7 +14,7 @@
                 <li><nuxt-link to="/login"></nuxt-link></li>
                 <perfilbutton></perfilbutton>
             </ul>
-            
+
         </nav>
         <div id="buscador"></div>
 
@@ -38,9 +42,12 @@
                 </div>
             </div>
         </div>
+
+
         <footer>
 
         </footer>
+    </div>
     </div>
 </template>
 
@@ -51,6 +58,7 @@
 import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import perfilbutton from '~/components/perfilbutton.vue';
+
 export default {
     components: {
         perfilbutton,
@@ -75,18 +83,22 @@ export default {
             marker: null,
             data: [],
             icono_llevar_a_barcelona: null,
+            loading: true,
 
         };
     },
     mounted() {
         this.initMapaDatosMapBox();
         this.fetchData();
+        setTimeout(async () => {
+            this.loader = false;
+        }, 2000);
     },
 
 
     methods: {
         async fetchData() {
-
+try {
             const response = await fetch('http://localhost:8000/api/discotecas');
 
 
@@ -110,6 +122,11 @@ export default {
             this.crear_mostrar_pines_discos();
             this.añadir_popup_info_de_las_discos();
 
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }finally{
+            this.loading = false;
+        }
 
         },
         initMapaDatosMapBox() {
@@ -267,11 +284,36 @@ export default {
   
 
 
-<style>
+<style >
 @import url('https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css');
 @import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&display=swap');
 
-
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegúrate de que el loader esté en la parte superior */
+  }
+  
+  .spinner {
+    border: 8px solid #f3f3f3; /* Color del borde del spinner */
+    border-top: 8px solid #3498db; /* Color del borde superior del spinner (puedes cambiarlo) */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite; /* Animación giratoria */
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 
 
 :root {
