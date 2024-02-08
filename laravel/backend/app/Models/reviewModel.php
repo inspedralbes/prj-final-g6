@@ -12,11 +12,11 @@ class reviewModel extends Model
     
     protected $fillable = [
         'user_id',
-        'local_id',
+        'disco_id',
+        'titulo',
         'puntuacion',
-        'comentario',
-        'destacado',
-        'fecha',
+        'content',
 
     ];
+    protected $table = 'reviews';
 }

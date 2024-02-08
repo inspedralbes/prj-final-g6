@@ -8,7 +8,7 @@ use App\Models\reviewModel;
 class reviewController extends Controller
 {
     //
-    public function create(Request $request){
+    public function createReview(Request $request){
         $review = new reviewModel;
         $review->user_id = $request->user_id;
         $review->disco_id = $request->disco_id;

@@ -55,7 +55,7 @@ Route::get('/discotecas/horario/{horario}', [App\Http\Controllers\discoControlle
 
 
 // ruta para crear una review
-Route::post('/reviews', [App\Http\Controllers\reviewController::class, 'create']);
+Route::post('/reviews', [App\Http\Controllers\reviewController::class, 'createReview']);
 // ruta para obtener todas las reviews
 Route::get('/reviews/{id}', [App\Http\Controllers\reviewController::class, 'getReviews']);
 // ruta para obtener una review por id
