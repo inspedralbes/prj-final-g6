@@ -1,56 +1,69 @@
 <template>
-    <div class="body">
-        <nav class="navbar">
-            <ul>
-                <li></li>
-                <li><nuxt-link to="/">INICIO</nuxt-link></li>
-                <li><nuxt-link to="/explorar">EXPLORAR</nuxt-link></li>
-                <li><nuxt-link to="/perfil">PERFIL</nuxt-link></li>
-            </ul>
-        </nav>
-        <div v-if="data.length > 0">
-            <div class="carousel-container">
-                <button @click="prevItem" class="arrow left-arrow">&lt;</button>
-                <div class="carousel-item">
-                    <h1>{{ currentDiscoteca.titulo }}</h1>
-                    <p>{{ currentDiscoteca.telefono }}</p>
-                    <img :src="currentDiscoteca.imgUrl" alt="Discoteca Image" />
-                    <p>{{ currentDiscoteca.descripcion }}</p>
-                    <p>{{ currentDiscoteca.horario }}</p>
-                    <p>{{ currentDiscoteca.minEdad }}</p>
-                    
+    <div class="container">
+
+        <ul class='carrusel'>
+            <!-- get the random image from -->
+            <li class='elemento' v-for="discoteca in data" style="background-image: url('dance2.jpg')">
+                <div class='contenido'>
+                    <h2 class='titulo'>{{ discoteca.nombre_local }}</h2>
+                    <p class='descripcion'>
+                        Lorem ipsum, dolor sit amet consectetur
+                        adipisicing elit. Tempore fuga voluptatum, iure corporis inventore
+                        praesentium nisi. Id laboriosam ipsam enim.
+                        Lorem ipsum, dolor sit amet consectetur
+                        adipisicing elit. Tempore fuga voluptatum, iure corporis inventore
+                        praesentium nisi. Id laboriosam ipsam enim.
+                        Lorem ipsum, dolor sit amet consectetur
+                        adipisicing elit. Tempore fuga voluptatum, iure corporis inventore
+                        praesentium nisi. Id laboriosam ipsam enim.
+                    </p>
                 </div>
-                <button @click="nextItem" class="arrow right-arrow">&gt;</button>
-            </div>
-        </div>
-        <h3 v-else>Loading...</h3>
+            </li>
+
+        </ul>
+        <nav class='navegacion'>
+            <button class='boton anterior' name="arrow-back-outline"></button>
+            <button class='boton siguiente' name="arrow-forward-outline"></button>
+        </nav>
     </div>
-
-    <footer>
-
-    </footer>
 </template>
   
 <script>
+
+
 export default {
     data() {
         return {
             data: [],
-            currentIndex: 0,
-            ruta_foto: null,
+            imageOptions: ['dance1.jpg', 'dance2.jpg', 'dance3.jpg']
         };
     },
-    computed: {
-        currentDiscoteca() {
-            return this.data[this.currentIndex] || {};
-        },
-    },
     methods: {
+        addEventListeners() {
+            this.carrusel = this.$el.querySelector('.carrusel');
+
+            function activar(e) {
+                const elementos = document.querySelectorAll('.elemento');
+                if (elementos.length > 0) {
+                    e.target.matches('.siguiente') && this.carrusel.append(elementos[0]);
+                    e.target.matches('.anterior') && this.carrusel.prepend(elementos[elementos.length - 1]);
+                } else {
+                    // Handle empty carousel (e.g., show default content or reset to the first element)
+                    // For now, let's just fetch data again and render it
+                    this.fetchData();
+                }
+            }
+
+            document.addEventListener('click', activar.bind(this), false);
+        },
         async fetchData() {
+
             const response = await fetch('http://localhost:8000/api/discotecas');
+
             const data = await response.json();
 
             this.data = data.map((discoteca) => {
+
                 return {
                     id: discoteca.id,
                     titulo: discoteca.nombre_local,
@@ -61,18 +74,42 @@ export default {
                     horario: discoteca.horario,
                     minEdad: discoteca.minEdad,
                 };
+
             });
+
+
         },
-        nextItem() {
-            this.currentIndex = (this.currentIndex + 1) % this.data.length;
+        getRandomImage() {
+            const randomIndex = Math.floor(Math.random() * this.imageOptions.length);
+            const randomImage = this.imageOptions[randomIndex];
+            return `url('${randomImage}')`;
         },
-        prevItem() {
-            this.currentIndex =
-                (this.currentIndex - 1 + this.data.length) % this.data.length;
+        prevElement() {
+            const elementos = document.querySelectorAll('.elemento');
+            if (elementos.length > 0) {
+                this.carrusel.prepend(elementos[elementos.length - 1]);
+            } else {
+                // Handle empty carousel (e.g., show default content or reset to the first element)
+                // For now, let's just fetch data again and render it
+                this.fetchData();
+            }
         },
+        nextElement() {
+            const elementos = document.querySelectorAll('.elemento');
+            if (elementos.length > 0) {
+                this.carrusel.append(elementos[0]);
+            } else {
+                // Handle empty carousel (e.g., show default content or reset to the first element)
+                // For now, let's just fetch data again and render it
+                this.fetchData();
+            }
+        },
+
     },
     mounted() {
+        console.log('Component mounted. Data:', this.data);
         this.fetchData();
+        this.addEventListeners();
     },
 };
 </script>
@@ -81,67 +118,7 @@ export default {
   
   
 <style lang="scss" scoped>
-
-/* styles for the carousel */
-
-.carousel-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    position: relative;
-}
-
-.carousel-item {
-    width: 70%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.carousel-item img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-}
-
-.arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 2rem;
-    background-color: var(--base);
-    color: var(--blanco);
-    border: none;
-    cursor: pointer;
-    padding: 10px 20px;
-    z-index: 1;
-}
-
-.left-arrow {
-    left: 0;
-}
-
-.right-arrow {
-    right: 0;
-}
-
-
-
-
-
-
-
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Antonio', sans-serif;
-    overflow: hidden;
-}
-
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
 
 :root {
     --base: hsl(0, 5%, 16%);
@@ -158,72 +135,152 @@ export default {
     --azul2: hsl(213, 15%, 38%);
 }
 
-.body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Antonio', sans-serif;
-    background-color: var(--carne2);
-    height: 100vh;
-}
 
-
-
-
-
-
-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 50px;
-    background-color: var(--base);
-}
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Antonio', sans-serif;
 }
 
-.navbar {
+.container {
 
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+
+.descripcion,
+.titulo {
+
+    text-shadow: #000000 .5px 0px 0px;
+    color: #59726f;
+    font-family: 'Fjalla One', sans-serif;
+    font-size: 30px;
+    line-height: 1.05;
+    margin-left: 40px;
+}
+
+.titulo {
+    font-size: 40px;
+    margin-bottom: 10px;
+    text-shadow: #ffffff8a .5px 0px 0px;
+}
+
+
+
+
+.elemento {
+    width: 300px;
+    height: 550px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: -1;
+    background-position: center;
+    background-size: cover;
+    border-radius: 1000px;
+    box-shadow: -2px 4px 10px 4px #0000005d;
+    scale: 1.1;
+    transition: 0.1s;
+
+}
+
+
+
+.elemento:nth-child(1),
+.elemento:nth-child(2) {
+    left: 0;
+    top: 0;
     width: 100%;
-    height: 150px;
-    background-color: var(--base);
-}
-
-.navbar ul {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    list-style: none;
     height: 100%;
-    color: var(--blanco);
+    transform: none;
+    border-radius: 0;
+    box-shadow: none;
+    opacity: 1;
 }
 
-.navbar>ul>li {
-    font-size: 60px;
+.elemento:nth-child(3) {
+    left: 45%;
 }
 
-.navbar ul li {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.elemento:nth-child(4) {
+    left: calc(50% + 260px);
+}
 
+.elemento:nth-child(5) {
+    left: calc(50% + 615px);
+}
+
+.elemento:nth-child(6) {
+    left: calc(50% + 1060px);
+    opacity: 0;
+}
+
+.elemento:nth-child(n + 7) {
+    display: none;
+    opacity: 0;
 }
 
 
 
-.navbar ul li:hover,
-.navbar ul li a:hover {
-    color: var(--carne2);
+
+.contenido {
+    width: min(30vw, 400px);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10rem;
+    opacity: 0;
+    display: none;
+
 }
 
-.navbar ul li a {
-    text-decoration: none;
-    color: var(--blanco);
+
+.elemento:nth-of-type(2) .contenido {
+    display: block;
+    animation: mostrar 0.5s ease-in-out 0.5s forwards;
+}
+
+@keyframes mostrar {
+    0% {
+        filter: blur(5px);
+        transform: translateY(-50%);
+    }
+
+
+
+    100% {
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+li::marker {
+    color: #59726f00;
+
+}
+
+.navegacion {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.navegacion .boton {
+    background-color: #59726f;
+    border: 2px solid rgba(0, 0, 0, 0.6);
+    margin: 0 .5rem;
+    padding: 2rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.navegacion .boton:hover {
+    background-color: rgba(255, 255, 255, 0.3);
 }
 </style>
   
