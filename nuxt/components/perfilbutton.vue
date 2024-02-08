@@ -82,17 +82,18 @@ body {
   font-size: 16px;
 }
 
-.pen-wrapper[data-v-e6985bec] {
+.pen-wrapper[data-v-e6985bec][data-v-e6985bec] {
     display: flex;
     height: calc(100vh - 160px);
     min-height: 500px;
     justify-content: center;
     align-items: center;
     z-index: 9;
-    position: relative;
-    right: -12%;
-    top: 9px;
-    margin-right: 62px;
+    position: fixed;
+    top: -31%;
+    /* margin-right: 59px; */
+    right: -3%;
+
 
   
   @media screen and (max-height: 800px) {

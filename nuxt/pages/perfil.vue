@@ -3,7 +3,7 @@
         <div class="profile">
 
             <div class="profile-image">
-                <img src="../public/img/3128-earth.png">
+                <img src="https://i.pinimg.com/236x/71/b5/30/71b530741316eb38be5e8bb582fa6a86.jpg">
 
             </div>
             <div class="profile-name">

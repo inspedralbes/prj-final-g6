@@ -6,7 +6,6 @@
                 <li><nuxt-link to="/">INICIO</nuxt-link></li>
                 <li><nuxt-link to="/explorar">EXPLORAR</nuxt-link></li>
                 <li><nuxt-link to="/perfil">PERFIL</nuxt-link></li>
-                <Perfil></Perfil>
             </ul>
         </nav>
         <div v-if="data.length > 0">
