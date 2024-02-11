@@ -2,28 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\discoModel;
 use Illuminate\Http\Request;
+use App\Models\LOCAL;
 
-class discoController extends Controller
+class LOCAL__CONTROLLER extends Controller
 {
     //
-    // funcion para obtener todas las discotecas
 
     public function getDiscotecas()
     {
-        $discotecas = discoModel::all();
-        
+        $discotecas = LOCAL::all();
+
         return response()->json($discotecas);
-      
     }
 
     // funcion para obtener una discoteca por id
 
     public function getDiscoteca($id)
     {
-        $discoteca = discoModel::find($id);
+        $discoteca = LOCAL::find($id);
         return $discoteca;
     }
 
@@ -32,7 +29,7 @@ class discoController extends Controller
 
     public function createDiscoteca(Request $request)
     {
-        $discoteca = discoModel::create($request->all());
+        $discoteca = LOCAL::create($request->all());
         return $discoteca;
     }
 
@@ -40,7 +37,7 @@ class discoController extends Controller
 
     public function updateDiscoteca(Request $request, $id)
     {
-        $discoteca = discoModel::find($id);
+        $discoteca = LOCAL::find($id);
         $discoteca->update($request->all());
         return $discoteca;
     }
@@ -49,7 +46,7 @@ class discoController extends Controller
 
     public function deleteDiscoteca($id)
     {
-        $discoteca = discoModel::find($id);
+        $discoteca = LOCAL::find($id);
         $discoteca->delete();
         return $discoteca;
     }
@@ -58,7 +55,7 @@ class discoController extends Controller
 
     public function getDiscotecasByName($nombre_local)
     {
-        $discotecas = discoModel::where('nombre_local', 'like', '%' . $nombre_local . '%')->get();
+        $discotecas = LOCAL::where('nombre_local', 'like', '%' . $nombre_local . '%')->get();
         return $discotecas;
     }
 
@@ -66,7 +63,7 @@ class discoController extends Controller
 
     public function getDiscotecasByAge($minEdad)
     {
-        $discotecas = discoModel::where('minEdad', '>=', $minEdad)->get();
+        $discotecas = LOCAL::where('minEdad', '>=', $minEdad)->get();
         return $discotecas;
     }
 
@@ -74,8 +71,7 @@ class discoController extends Controller
 
     public function getDiscotecasBySchedule($horario)
     {
-        $discotecas = discoModel::where('horario', 'like', '%' . $horario . '%')->get();
+        $discotecas = LOCAL::where('horario', 'like', '%' . $horario . '%')->get();
         return $discotecas;
     }
-
 }
