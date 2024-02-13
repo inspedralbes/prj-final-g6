@@ -1,78 +1,72 @@
 <template>
+  <body>
+    
+ 
   <div class="container">
-    <h1>Crear Reseña para la Disco {{ puntoInteresId }}</h1>
-    <form @submit.prevent="submitReview">
-      <div>
-        <label for="titulo">Título:</label>
-        <input type="text" id="titulo" v-model="titulo" required>
-      </div>
-      <div>
-        <label for="content">Contenido:</label>
-        <textarea id="content" v-model="content" required></textarea>
-      </div>
-      <div class="star-rating">
-        <input type="radio" id="star5" name="rating" value="5" v-model="puntuacion" required/>
-        <label for="star5" title="5 stars"></label>
-        <input type="radio" id="star4" name="rating" value="4" v-model="puntuacion"/>
-        <label for="star4" title="4 stars"></label>
-        <input type="radio" id="star3" name="rating" value="3" v-model="puntuacion"/>
-        <label for="star3" title="3 stars"></label>
-        <input type="radio" id="star2" name="rating" value="2" v-model="puntuacion"/>
-        <label for="star2" title="2 stars"></label>
-        <input type="radio" id="star1" name="rating" value="1" v-model="puntuacion"/>
-        <label for="star1" title="1 star"></label>
-      </div>
-      <button type="submit">Enviar Reseña</button>
-    </form>
+      <div class="title">Crear Reseña para la Disco {{ puntoInteresId }}</div>
+      <form @submit.prevent="submitReview" class="form">
+        <input type="text" v-model.trim="titulo" class="input" placeholder="Título" required />
+        <textarea v-model.trim="content" class="input" placeholder="Contenido" required></textarea>
+        <div class="star-rating">
+          <input type="radio" id="star5" name="rating" value="5" v-model="puntuacion" required/>
+          <label for="star5" title="5 stars"></label>
+          <input type="radio" id="star4" name="rating" value="4" v-model="puntuacion"/>
+          <label for="star4" title="4 stars"></label>
+          <input type="radio" id="star3" name="rating" value="3" v-model="puntuacion"/>
+          <label for="star3" title="3 stars"></label>
+          <input type="radio" id="star2" name="rating" value="2" v-model="puntuacion"/>
+          <label for="star2" title="2 stars"></label>
+          <input type="radio" id="star1" name="rating" value="1" v-model="puntuacion"/>
+          <label for="star1" title="1 star"></label>
+        </div>
+        <button type="submit" class="button">Enviar Reseña</button>
+      </form>
+  
   </div>
+</body>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+<script>
+export default {
+  name: 'ResenaScreen',
+  data() {
+    return {
+      puntoInteresId: '', 
+      user_id: 1,
+      titulo: '',
+      content: '',
+      puntuacion: 0
+    };
+  },
 
-const router = useRouter()
-const route = useRoute()
-const puntoInteresId = ref(route.params.id)
-const titulo = ref('')
-const content = ref('')
-const puntuacion = ref(0)
-
-const submitReview = async () => {
-  const user_id = 1; 
-
-  const nuevaReseña = {
-    disco_id: puntoInteresId.value,
-    user_id: user_id, 
-    titulo: titulo.value,
-    content: content.value,
-    puntuacion: puntuacion.value
-  }
-
-  try {
-
-    const response = await fetch('http://localhost:8000/api/reviews', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(nuevaReseña)
-    })
-
+  methods: {
+    submitReview() {
+  fetch('http://localhost:8000/api/reviews', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      disco_id: this.puntoInteresId,
+      user_id: this.user_id,
+      titulo: this.titulo.trim(),
+      content: this.content.trim(),
+      puntuacion: this.puntuacion
+    }),
+  })
+  .then(response => {
     if (!response.ok) {
-      throw new Error(`Error al enviar la reseña: ${response.status} - ${response.statusText}`)
+      throw new Error(`Error al enviar la reseña: ${response.status} - ${response.statusText}`);
     }
-
-    console.log('Reseña enviada correctamente')
-    router.push('/')
-  } catch (error) {
-    if (error instanceof TypeError) {
-      console.error('Error de red:', error.message)
-    } else {
-      console.error('Error al enviar la reseña:', error.message)
-    }
-  }
+    console.log('Reseña enviada correctamente');
+    this.$router.push('/');
+  })
+  .catch(error => {
+    console.error('Error al enviar la reseña:', error);
+  });
 }
+  }
+};
 </script>
 
 <style scoped>
