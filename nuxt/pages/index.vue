@@ -28,6 +28,8 @@
                     <p>Telefono: {{ pin_seleccionado.telefono }}</p>
                     <p>Edad minima: {{ pin_seleccionado.minEdad }}</p>
                     <NuxtLink :to="'/Crear-Review/' + pin_seleccionado.id" class="btn-create-review">Crear Reseña</NuxtLink>
+                    
+                    
                 </div>
             </div>
         </div>

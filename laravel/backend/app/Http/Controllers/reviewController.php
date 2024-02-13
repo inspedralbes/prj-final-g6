@@ -10,7 +10,7 @@ class reviewController extends Controller
     //
     public function createReview(Request $request){
         $review = new reviewModel;
-        $review->user_id = $request->user_id;
+        $review->usuario_id = $request->usuario_id;
         $review->disco_id = $request->disco_id;
         $review->titulo = $request->titulo;
         $review->content = $request->content;
