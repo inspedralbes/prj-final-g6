@@ -1,36 +1,21 @@
 <?php
-
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\USUARIO__CONTROLLER;
+use Illuminate\Support\Facades\Auth;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-
-Route::post('/check-authentication', [App\Http\Controllers\authController::class, 'checkAuthentication']);
-//ruta para crear usuarios
-Route::post('/register', [App\Http\Controllers\userController::class, 'register']);
-//ruta para logear usuarios
-Route::post('/login', [App\Http\Controllers\userController::class, 'login']);
-
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/csrf-token', function () {
+    return csrf_token();
 });
 
-Route::middleware('auth:sanctum')->get('/check-authentication', function () {
-    $user = Auth::user();
+Route::middleware(['api'])->group(function () {
+    Route::get('/user', function() {
+        return Auth::user();
+    })->middleware('auth');
 
-    return response(['authenticated' => $user !== null, 'user' => $user]);
+    Route::post('/login', [USUARIO__CONTROLLER::class, 'login']);
+    Route::post('/register', [USUARIO__CONTROLLER::class, 'register']);
 });
+<<<<<<< HEAD
 
 
 
@@ -70,3 +55,5 @@ Route::get('/reviews/user/{id}', [App\Http\Controllers\reviewController::class, 
 Route::get('/reviews/disco/{id}', [App\Http\Controllers\reviewController::class, 'getReviewsByDisco']);
 // ruta para obtener las reviews por puntuacion
 Route::get('/reviews/puntuacion/{puntuacion}', [App\Http\Controllers\reviewController::class, 'getReviewsByPuntuacion']);
+=======
+>>>>>>> 5331604d (autoritzacio amb pinia, falta solucionar format fecha_nacimiento)
