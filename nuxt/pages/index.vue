@@ -284,7 +284,7 @@ try {
   
 
 
-<style >
+<style scoped >
 @import url('https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css');
 @import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&display=swap');
 
