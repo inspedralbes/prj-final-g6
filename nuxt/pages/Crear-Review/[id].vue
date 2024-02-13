@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <div class="container">
     <h1>Crear Reseña para la Disco {{ puntoInteresId }}</h1>
     <form @submit.prevent="submitReview">
@@ -119,3 +120,16 @@ textarea {
   color: #ffc107;
 }
 </style>
+=======
+    <div>
+        AA
+    </div>
+</template>
+
+
+<script>
+
+</script>
+
+<style lang="scss" scoped></style>
+>>>>>>> 4fac5840fad90a6ce920a7a4cd77202e39099150

@@ -16,6 +16,7 @@ Route::middleware(['api'])->group(function () {
     Route::post('/register', [USUARIO__CONTROLLER::class, 'register']);
 });
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 
@@ -57,3 +58,5 @@ Route::get('/reviews/disco/{id}', [App\Http\Controllers\reviewController::class,
 Route::get('/reviews/puntuacion/{puntuacion}', [App\Http\Controllers\reviewController::class, 'getReviewsByPuntuacion']);
 =======
 >>>>>>> 5331604d (autoritzacio amb pinia, falta solucionar format fecha_nacimiento)
+=======
+>>>>>>> 4fac5840fad90a6ce920a7a4cd77202e39099150
