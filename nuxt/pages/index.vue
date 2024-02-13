@@ -353,6 +353,8 @@ export default {
 
 
 <style>
+
+
 @import url('https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css');
 @import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&display=swap');
 
@@ -391,6 +393,7 @@ export default {
 
 .container {
     height: 100vh;
+    min-width: 100vw;
 }
 
 footer {
@@ -409,7 +412,6 @@ footer {
 }
 
 .navbar {
-
     width: 100%;
     height: 150px;
     background-color: var(--base);
@@ -588,4 +590,7 @@ footer {
     text-decoration: none;
     font-size: 0;
 }
+
+
+
 </style>

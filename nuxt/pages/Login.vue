@@ -32,24 +32,52 @@
 
 <script>
 export default {
+    name: 'LoginScreen',
     data() {
         return {
             email: '',
             password: '',
+            isLoading: false,
         };
     },
     methods: {
-        async handleLogin() {
-            const { success, message } = await this.$store.dispatch('auth/login', {
-                email: this.email.trim(),
-                password: this.password.trim(),
-            });
+        login() {
+            this.isLoading = true;
 
-            if (success) {
-                this.$router.push('/');
-            } else {
-                alert(`Login failed: ${message}`);
-            }
+            fetch('http://localhost:8000/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: this.email.trim(),
+                    password: this.password.trim(),
+                }),
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log('Success:', data);
+
+                    if (data.status === 1) {
+                        localStorage.setItem('authToken', data.access_token);
+                        navigateTo('/dashboard');
+
+                    } else {
+                        alert('Inicio de sesión fallido. Verifica tus credenciales.');
+                    }
+                })
+                .catch((error) => {
+                    alert('Hubo un problema durante el inicio de sesión. Inténtalo de nuevo más tarde.');
+                    console.error('Error:', error);
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
         },
     },
 };
