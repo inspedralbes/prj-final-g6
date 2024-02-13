@@ -22,20 +22,38 @@
 
         </ul>
         <nav class='navegacion'>
-            <button class='boton anterior' name="arrow-back-outline"></button>
-            <button class='boton siguiente' name="arrow-forward-outline"></button>
+            <button class='boton anterior'>&lt;</button>
+            <button class='boton siguiente'>&gt;</button>
         </nav>
     </div>
 </template>
   
 <script>
 
-
 export default {
     data() {
         return {
             data: [],
             imageOptions: ['dance1.jpg', 'dance2.jpg', 'dance3.jpg']
+        };
+    },
+    head() {
+        return {
+            link: [
+                {
+                    rel: 'stylesheet',
+                    href: 'https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap'
+                },
+                {
+                    src: 'https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js',
+                    type: 'module'
+                },
+                {
+                    src: 'https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js',
+                    nomodule: true
+                },
+
+            ]
         };
     },
     methods: {
@@ -170,8 +188,6 @@ export default {
 }
 
 
-
-
 .elemento {
     width: 300px;
     height: 550px;
@@ -187,8 +203,6 @@ export default {
     transition: 0.1s;
 
 }
-
-
 
 .elemento:nth-child(1),
 .elemento:nth-child(2) {
@@ -223,9 +237,6 @@ export default {
     display: none;
     opacity: 0;
 }
-
-
-
 
 .contenido {
     width: min(30vw, 400px);
@@ -268,6 +279,7 @@ li::marker {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
+
 }
 
 .navegacion .boton {
@@ -277,6 +289,7 @@ li::marker {
     padding: 2rem;
     border-radius: 50%;
     cursor: pointer;
+
 }
 
 .navegacion .boton:hover {
