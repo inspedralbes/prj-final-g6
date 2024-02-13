@@ -10,12 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('REVIEWS', function (Blueprint $table) {
+        Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('usuario_id');
-            $table->foreign('usuario_id')->references('id')->on('USUARIOS')->onDelete('cascade');
-            $table->unsignedBigInteger('local_id');
-            $table->foreign('local_id')->references('id')->on('LOCALES')->onDelete('cascade');
+            $table->foreign('usuario_id')->references('id')->on('usuarios')->onDelete('cascade');
+            $table->unsignedBigInteger('disco_id');
+            $table->foreign('disco_id')->references('id')->on('discotecas')->onDelete('cascade');
             $table->string('titulo');
             $table->text('content');
             $table->unsignedInteger('puntuacion');
