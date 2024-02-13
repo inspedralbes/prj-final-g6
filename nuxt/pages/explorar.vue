@@ -3,7 +3,7 @@
 
         <ul class='carrusel'>
             <!-- get the random image from -->
-            <li class='elemento' v-for="discoteca in data" style="background-image: url('dance2.jpg')">
+            <li class='elemento' v-for="discoteca in data" style="background-image: url('/img/dance2.jpg')">
                 <div class='contenido'>
                     <h2 class='titulo'>{{ discoteca.nombre_local }}</h2>
                     <p class='descripcion'>

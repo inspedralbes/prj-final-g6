@@ -30,45 +30,82 @@
     </body>
 </template>
   
+  
 <script>
-
 export default {
-  name: 'RegisterScreen',
-  data() {
-    return {
-      nombre: '',
-      email: '',
-      password: '',
-      password2: '',
-      birthdate: '',
-      phone: '',
-      acceptTerms: false,
-    };
-  },
-  methods: {
-    async register() {
-      try {
-        const response = await this.$store.dispatch('auth/register', {
-          nombre: this.nombre.trim(),
-          email: this.email.trim(),
-          password: this.password.trim(),
-          password2: this.password2.trim(),
-          birthdate: this.birthdate,
-          phone: this.phone,
-        });
-
-        if (response.success) {
-          alert('Usuario registrado correctamente!');
-          this.$router.push('/');
-        } else {
-          alert(`Error: ${response.message}`);
-        }
-      } catch (error) {
-        console.error('Error during registration:', error);
-        alert('Hubo un problema durante el registro. Inténtalo de nuevo más tarde.');
-      }
+    name: 'RegisterScreen',
+    data() {
+        return {
+            nombre: '',
+            email: '',
+            password: '',
+            password2: '', // Add this line
+            birthdate: '', // Add this line
+            phone: '', // Add this line
+            acceptTerms: false, // Add this line
+        };
     },
-  },
+
+    methods: {
+        register() {
+            fetch('http://localhost:8000/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nombre: this.nombre.trim(),
+                    email: this.email.trim(),
+                    password: this.password.trim(),
+                    birthdate: this.birthdate, // Include birthdate
+                    phone: this.phone, // Include phone
+                    password2: this.password2, // Include password2
+                }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    try {
+                        return JSON.parse(text);
+                    } catch (error) {
+                        console.error('Could not parse JSON:', text);
+                        throw error;
+                    }
+                })
+                .then(data => {
+
+                    if (data.error) {
+                        localStorage.setItem('authToken', data.access_token);
+                        // Almacena solo la información necesaria del usuario
+                        localStorage.setItem('user', JSON.stringify({
+                            nombre: data.user.nombre,
+                            email: data.user.email,
+                            token: data.access_token,
+                            
+                        }));
+
+                        alert(data.error);
+                    } else {
+                        alert('Usuario registrado correctamente!');
+                        // Almacena solo la información necesaria del usuario
+                        localStorage.setItem('user', JSON.stringify({
+                            nombre: this.nombre.trim(),
+                            email: this.email.trim(),
+                            token: data.access_token,
+                        }));
+                        navigateTo('/login');
+                    }
+                })
+
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+    }
 };
 </script>
   
@@ -176,4 +213,5 @@ export default {
 .checkbox label {
     font-size: 16px;
     color: #333;
-}</style>
+}
+</style>
