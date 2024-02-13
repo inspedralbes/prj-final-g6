@@ -25,8 +25,13 @@
                     <p>Sobre el local: {{ pin_seleccionado.descripcion }}</p>
                     <p>Horario: {{ pin_seleccionado.horario }}</p>
                     <p>Telefono: {{ pin_seleccionado.telefono }}</p>
-                    <p>Edad minima: {{ pin_seleccionado.minEdad }}</p>                
-                    <NuxtLink :to="'/Crear-Review/' + pin_seleccionado.id" class="btn-create-review">Crear Reseña</NuxtLink>
+                    <p>Edad minima: {{ pin_seleccionado.minEdad }}</p>
+                    <NuxtLink :to="'/Crear-Review/' + pin_seleccionado.id" class="btn-create-review">Crear Reseña
+                        </NuxtLink>
+                        =======
+                        <p>Edad minima: {{ pin_seleccionado.minEdad }}</p>
+                        <!-- < -->
+                        <Nuxt-link :to="'/Crear-Review/' + pin_seleccionado.id">Ver más</nuxt-link>
                 </div>
             </div>
         </div>
@@ -34,7 +39,6 @@
 
         </footer>
     </div>
-
 </template>
 
   
@@ -276,14 +280,16 @@ export default {
             });
 
             this.map.on('click', 'unclustered-point', (e) => {
-                this.cerrarPopUp();
+
                 if (e.features && e.features.length > 0) {
                     const id = e.features[0].properties.id;
+
                     if (id !== undefined && id < this.data.length) {
                         this.punto_de_interes_seleccionado = true;
                         this.pin_seleccionado = this.data[id];
                     }
                 }
+
             });
         },
         cerrarPopUp() {
@@ -352,9 +358,6 @@ export default {
 
 
 <style>
-
-
-
 @import url('https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css');
 @import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&display=swap');
 
@@ -370,9 +373,11 @@ export default {
     justify-content: center;
     text-decoration: none;
     margin-top: 40px;
-
 }
 
+* {
+    overflow: hidden;
+}
 
 :root {
     --base: hsl(0, 5%, 16%);
