@@ -15,8 +15,7 @@ Route::middleware(['api'])->group(function () {
     Route::post('/login', [USUARIO__CONTROLLER::class, 'login']);
     Route::post('/register', [USUARIO__CONTROLLER::class, 'register']);
 });
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 
 
 
