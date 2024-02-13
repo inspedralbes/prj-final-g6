@@ -20,23 +20,14 @@
                     <div class="card-closer" @click="cerrarPopUp">X</div>
                 </div>
                 <div class="card-body">
-                    <img :src="'https://via.placeholder.com/200'" alt="imagen de la discoteca" style="width: 100%; height: 200px; object-fit: cover;">
-                    
+                    <img :src="'https://via.placeholder.com/200'" alt="imagen de la discoteca"
+                        style="width: 100%; height: 200px; object-fit: cover;">
+
                     <p>Sobre el local: {{ pin_seleccionado.descripcion }}</p>
                     <p>Horario: {{ pin_seleccionado.horario }}</p>
                     <p>Telefono: {{ pin_seleccionado.telefono }}</p>
                     <p>Edad minima: {{ pin_seleccionado.minEdad }}</p>
-<<<<<<< HEAD
-                    <NuxtLink :to="'/Crear-Review/' + pin_seleccionado.id" class="btn-create-review">Crear Reseña
-                        </NuxtLink>
-                        =======
-                        <p>Edad minima: {{ pin_seleccionado.minEdad }}</p>
-                        <!-- < -->
-                        <Nuxt-link :to="'/Crear-Review/' + pin_seleccionado.id">Ver más</nuxt-link>
-=======
-                    <!-- < -->
-                    <Nuxt-link :to="'/Crear-Review/'+pin_seleccionado.id">Ver más</nuxt-link>
->>>>>>> 4fac5840fad90a6ce920a7a4cd77202e39099150
+                    <NuxtLink :to="'/Crear-Review/' + pin_seleccionado.id" class="btn-create-review">Crear Reseña</NuxtLink>
                 </div>
             </div>
         </div>
@@ -54,10 +45,6 @@ import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 
 export default {
-<<<<<<< HEAD
-=======
-  
->>>>>>> 4fac5840fad90a6ce920a7a4cd77202e39099150
 
     head() {
         return {
@@ -289,27 +276,15 @@ export default {
             });
 
             this.map.on('click', 'unclustered-point', (e) => {
-<<<<<<< HEAD
 
                 if (e.features && e.features.length > 0) {
                     const id = e.features[0].properties.id;
 
-=======
-         
-                if (e.features && e.features.length > 0) {
-                    const id = e.features[0].properties.id;
-             
->>>>>>> 4fac5840fad90a6ce920a7a4cd77202e39099150
                     if (id !== undefined && id < this.data.length) {
                         this.punto_de_interes_seleccionado = true;
                         this.pin_seleccionado = this.data[id];
                     }
                 }
-<<<<<<< HEAD
-
-=======
-               
->>>>>>> 4fac5840fad90a6ce920a7a4cd77202e39099150
             });
         },
         cerrarPopUp() {
@@ -395,11 +370,7 @@ export default {
     margin-top: 40px;
 }
 
-<<<<<<< HEAD
 * {
-=======
-*{
->>>>>>> 4fac5840fad90a6ce920a7a4cd77202e39099150
     overflow: hidden;
 }
 
