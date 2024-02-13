@@ -34,8 +34,8 @@ export default {
       puntoInteresId: '', 
       user_id: 1,
       titulo: '',
-      content: '',
-      puntuacion: 0
+      puntuacion: 0,
+      content: ''
     };
   },
 
@@ -50,8 +50,8 @@ export default {
       disco_id: this.puntoInteresId,
       user_id: this.user_id,
       titulo: this.titulo.trim(),
-      content: this.content.trim(),
-      puntuacion: this.puntuacion
+      puntuacion: this.puntuacion,
+      content: this.content.trim()
     }),
   })
   .then(response => {
