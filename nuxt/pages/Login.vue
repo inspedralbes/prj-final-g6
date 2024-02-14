@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+
         <div class="left">
             <form @submit.prevent="login" class="form">
                 <img class="background-image" src="../public/img/images.jpg" alt="Imagen de fondo">
@@ -29,51 +30,85 @@
         </div>
     </div>
 </template>
-
 <script>
 export default {
-    name: 'LoginScreen',
     data() {
         return {
             email: '',
             password: '',
             isLoading: false,
+            csrf: null
         };
     },
+    /*
+    
+    created() {
+        fetch('http://localhost:8000/api/csrf-token')
+            .then(response => response.text())  // Get the response text
+            .then(text => {
+                console.log('Response text:', text);  // Log the response text
+
+                // Try to parse the response text as JSON
+                try {
+                    const data = JSON.parse(text);
+                    this.csrf = data.token;
+                    console.log(this.csrf);
+                } catch (error) {
+                    console.error('Failed to parse response as JSON:', error);
+                }
+            });
+    },
+    
+    */
     methods: {
         login() {
             this.isLoading = true;
 
-            fetch('http://localhost:8000/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: this.email.trim(),
-                    password: this.password.trim(),
-                }),
-            })
-                .then((response) => {
+            // Fetch a new CSRF token
+            fetch('http://localhost:8000/api/csrf-token')
+                .then(response => response.text())
+                .then(text => {
+                    try {
+                        const data = JSON.parse(text);
+                        this.csrf = data.token;
+                        console.log('New CSRF token:', this.csrf);
+
+                        // Perform the login request with the new CSRF token
+                        return fetch('http://localhost:8000/api/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': this.csrf,
+                            },
+                            body: JSON.stringify({
+                                email: this.email.trim(),
+                                password: this.password.trim(),
+                               
+                            }),
+                        });
+                    } catch (error) {
+                        console.error('Failed to parse CSRF token response as JSON:', error);
+                    }
+                })
+                .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
                     }
                     return response.json();
                 })
-                .then((data) => {
+                .then(data => {
                     console.log('Success:', data);
 
                     if (data.status === 1) {
                         localStorage.setItem('authToken', data.access_token);
-                        navigateTo('/dashboard');
-
+                        console.log(data.access_token);
+                        navigateTo('/');
                     } else {
                         alert('Inicio de sesión fallido. Verifica tus credenciales.');
                     }
                 })
-                .catch((error) => {
-                    alert('Hubo un problema durante el inicio de sesión. Inténtalo de nuevo más tarde.');
-                    console.error('Error:', error);
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
                 })
                 .finally(() => {
                     this.isLoading = false;

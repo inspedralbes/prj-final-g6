@@ -3,8 +3,8 @@
     <div class="container">
       <div class="title">Crear Reseña para la Disco {{ puntoInteresId }}</div>
       <form @submit.prevent="submitReview" class="form">
-        <input type="text" v-model.trim="titulo" class="input" placeholder="Título" required />
-        <textarea v-model.trim="content" class="input" placeholder="Contenido" required></textarea>
+        <input type="text" v-model="titulo" class="input" placeholder="Título" required />
+        <textarea v-model="content" class="input" placeholder="Contenido" required></textarea>
         <div class="star-rating">
           <input type="radio" id="star5" name="rating" value="5" v-model="puntuacion" required />
           <label for="star5" title="5 stars"></label>
