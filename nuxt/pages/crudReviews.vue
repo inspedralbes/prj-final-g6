@@ -10,8 +10,8 @@
             <tr>
               <th>ID</th>
               <th>Título</th>
-              <th>Contenido</th>
-              <th>Puntuación</th>
+              <th>Comentario</th>
+              <th>Valoración</th>
               <th>Discoteca</th>
               <th>Acciones</th> 
             </tr>
@@ -21,7 +21,11 @@
               <td>{{ review.id }}</td>
               <td>{{ review.titulo }}</td>
               <td>{{ review.content }}</td>
-              <td>{{ review.puntuacion }}</td>
+              <td>
+                <div class="star-rating">
+                  <span v-for="n in 5" :class="{ 'filled': n <= review.puntuacion }">&#9733;</span>
+                </div>
+              </td>
               <td>{{ review.discoName }}</td>
               <td>
                 <button class="button edit" @click="editReview(review.id)">Editar</button>
@@ -41,13 +45,11 @@
         reviews: []
       };
     },
-    created() {
-      this.fetchReviews();
-    },
+    
     methods: {
       async fetchReviews() {
         try {
-          const response = await fetch('http://localhost:8000/api/reviews/{id}');
+          const response = await fetch('http://localhost:8000/api/reviews');
           if (!response.ok) {
             throw new Error(`Error al obtener las reseñas: ${response.status} - ${response.statusText}`);
           }
@@ -76,17 +78,28 @@
         // Implementa la lógica para editar una reseña aquí
       },
       async deleteReview(id) {
-  if (confirm('¿Estás seguro de que quieres eliminar esta reseña?')) {
-      const response = await fetch(`http://localhost:8000/api/reviews/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
+        if (confirm('¿Estás seguro de que quieres eliminar esta reseña?')) {
+          try {
+            const response = await fetch(`http://localhost:8000/api/reviews/${id}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
+  
+            if (response.ok) {
+              this.reviews = this.reviews.filter(review => review.id !== id);
+            } else {
+              console.error('Error al eliminar la reseña:', response.statusText);
+            }
+          } catch (error) {
+            console.error('Error al eliminar la reseña:', error.message);
+          }
         }
-      });
-     
-  }
-}
-
+      }
+    },
+    mounted() {
+      this.fetchReviews();
     }
   };
   </script>
@@ -132,7 +145,7 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 14px;
+    font-size: 14px;  
     cursor: pointer;
     margin: 5px;
   }
@@ -146,7 +159,15 @@
   }
   
   .button:hover {
-    opacity: 0.8;
+    opacity: 0.8;   
+  }
+  
+  .star-rating {
+    color: rgb(201, 201, 191); 
+  }
+  
+  .star-rating .filled {
+    color: gold; 
   }
   </style>
   

@@ -18,24 +18,36 @@ class reviewController extends Controller
         $review->save();
         return response()->json($review);
     }
-    public function getReviews($id){
-        $reviews = reviewModel::all(); 
+    public function getReviews(){
+        $reviews = reviewModel::all();  
         return response()->json($reviews);
     }    
     public function getReview($id){
         $review = reviewModel::find($id);
         return response()->json($review);
     }
-    public function update(Request $request, $id){
-        $review = reviewModel::find($id);
-        $review->usuario_id = $request->usuario_id;
-        $review->disco_id = $request->disco_id;
-        $review->titulo = $request->titulo;
-        $review->content = $request->content;
-        $review->puntuacion = $request->puntuacion;
-        $review->save();
-        return response()->json($review);
-    }
+    public function update(Request $request, $id)
+{
+    $request->validate([
+        'usuario_id' => 'required',
+        'disco_id' => 'required',
+        'titulo' => 'required',
+        'content' => 'required',
+        'puntuacion' => 'required',
+    ]);
+
+    $review = reviewModel::find($id);
+    $review->usuario_id = $request->usuario_id;
+    $review->disco_id = $request->disco_id;
+    $review->titulo = $request->titulo;
+    $review->content = $request->content;
+    $review->puntuacion = $request->puntuacion;
+    $review->save();
+
+    // Devolver la reseña actualizada
+    return response()->json($review);
+}
+
     public function delete($id){
         $review = reviewModel::find($id);
         $review->delete();
