@@ -26,6 +26,8 @@
     "leaflet": "^1.9.4",
     "mapbox-gl": "^3.1.2",
     "supercluster": "^8.0.1",
+    "swiper": "^11.0.6",
+    "vue-carousel": "^0.18.0",
     "vue2-google-maps": "^0.10.7"
   }
 }
