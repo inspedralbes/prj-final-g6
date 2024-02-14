@@ -11,7 +11,7 @@ class reviewModel extends Model
 
     
     protected $fillable = [
-        'user_id',
+        'usuario_id',
         'disco_id',
         'titulo',
         'puntuacion',
