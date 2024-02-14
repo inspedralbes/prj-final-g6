@@ -1,9 +1,10 @@
 <template>
+
   <div class="container">
     <div class="title">Crear Reseña para la Disco {{ puntoInteresId }}</div>
     <form @submit.prevent="submitReview" class="form">
-      <input type="text" v-model.trim="titulo" class="input" placeholder="Título" required />
-      <textarea v-model.trim="content" class="input" placeholder="Contenido" required></textarea>
+      <input type="text" v-model="titulo" class="input" placeholder="Título" required />
+      <textarea v-model="content" class="input" placeholder="Contenido" required></textarea>
       <div class="star-rating">
         <input type="radio" id="star5" name="rating" value="5" v-model="puntuacion" required />
         <label for="star5" title="5 stars"></label>
@@ -16,11 +17,9 @@
         <input type="radio" id="star1" name="rating" value="1" v-model="puntuacion" />
         <label for="star1" title="1 star"></label>
       </div>
-      <button :disabled="isSubmitting" type="submit" class="button">
-        {{ isSubmitting ? 'Enviando...' : 'Enviar Reseña' }}
-      </button>
-      <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+      <button type="submit" class="button">Enviar Reseña</button>
     </form>
+
   </div>
 
 </template>
@@ -29,135 +28,103 @@
 
 
 export default {
+data() {
+  
+  return {
+    usuario_id: 1,
+    titulo: '',
+    puntuacion: 0,
+    content: ''
+  };
+},
 
-  data() {
+methods: {
+  submitReview() {
+    fetch('http://localhost:8000/api/reviews', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
 
-    return {
-      usuario_id: 1,
-      puntoInteresId: null,
-      titulo: '',
-      puntuacion: 0,
-      content: '',
-      isSubmitting: false,
-      errorMessage: ''
-    };
-  },
-
-  methods: {
-    submitReview() {
-      this.isSubmitting = true;
-      fetch('http://localhost:8000/api/reviews', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-     
-        },
-        body: JSON.stringify({
-          disco_id: this.puntoInteresId,
-          usuario_id: this.usuario_id,
-          titulo: this.titulo,
-          puntuacion: this.puntuacion,
-          content: this.content
-        }),
+      },
+      body: JSON.stringify({
+        disco_id: this.puntoInteresId,
+        usuario_id: this.usuario_id,
+        titulo: this.titulo,
+        puntuacion: this.puntuacion,
+        content: this.content
+      }),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Error al enviar la reseña: ${response.status} - ${response.statusText}`);
+        }
+        console.log('Reseña enviada correctamente');
+        navigateTo('/');
       })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`Error al enviar la reseña: ${response.status} - ${response.statusText}`);
-          }
-          console.log('Reseña enviada correctamente');
-          this.navigateTo('/');
-        })
-        .catch(error => {
-          console.error('Error al enviar la reseña:', error);
-          this.errorMessage = 'Error al enviar la reseña. Por favor, inténtalo de nuevo más tarde.';
-        })
-        .finally(() => {
-          this.isSubmitting = false;
-        });
-    },
-  },
-  created() {
-    this.puntoInteresId = this.$route.params.id;
+      .catch(error => {
+        console.error('Error al enviar la reseña:', error);
+      });
   }
+},
+created() {
+  this.puntoInteresId = this.$route.params.id;
+}
 };
 </script>
 
 <style scoped>
 .container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+max-width: 600px;
+margin: 0 auto;
+padding: 20px;
+border: 1px solid #ccc;
+border-radius: 8px;
+background-color: #f9f9f9;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .title {
-  font-size: 24px;
-  margin-bottom: 20px;
+font-size: 24px;
+margin-bottom: 20px;
 }
 
 .input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+width: 100%;
+padding: 10px;
+margin-bottom: 20px;
+border: 1px solid #ccc;
+border-radius: 4px;
+box-sizing: border-box;
 }
 
 textarea.input {
-  height: 150px;
+height: 150px;
 }
 
 .star-rating {
-  unicode-bidi: bidi-override;
-  direction: rtl;
-  text-align: center;
+unicode-bidi: bidi-override;
+direction: rtl;
+text-align: center;
 }
 
 .star-rating input[type="radio"] {
-  display: none;
+display: none;
 }
 
 .star-rating label {
-  display: inline-block;
-  padding: 5px;
-  font-size: 30px;
-  color: #ccc;
-  cursor: pointer;
+display: inline-block;
+padding: 5px;
+font-size: 30px;
+color: #ccc;
+cursor: pointer;
 }
 
 .star-rating label:before {
-  content: '★';
+content: '★';
 }
 
 .star-rating input[type="radio"]:checked~label {
-  color: #ffc107;
-}
-
-.button {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.button:hover {
-  background-color: #0056b3;
-}
-
-.error-message {
-  color: red;
+color: #ffc107;
 }
 </style>
