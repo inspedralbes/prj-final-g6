@@ -1,22 +1,9 @@
 <template>
     <div class="container">
-
         <ul class='carrusel'>
-            <!-- get the random image from -->
-            <li class='elemento' v-for="discoteca in data" style="background-image: url('dance2.jpg')">
+            <li class='elemento' v-for="discoteca in data" :style="{ backgroundImage: 'url(' + discoteca.imgUrl + ')' }">
                 <div class='contenido'>
-                    <h2 class='titulo'>{{ discoteca.nombre_local }}</h2>
-                    <p class='descripcion'>
-                        Lorem ipsum, dolor sit amet consectetur
-                        adipisicing elit. Tempore fuga voluptatum, iure corporis inventore
-                        praesentium nisi. Id laboriosam ipsam enim.
-                        Lorem ipsum, dolor sit amet consectetur
-                        adipisicing elit. Tempore fuga voluptatum, iure corporis inventore
-                        praesentium nisi. Id laboriosam ipsam enim.
-                        Lorem ipsum, dolor sit amet consectetur
-                        adipisicing elit. Tempore fuga voluptatum, iure corporis inventore
-                        praesentium nisi. Id laboriosam ipsam enim.
-                    </p>
+                    <h2 class='titulo'>{{ discoteca.titulo }}</h2>
                 </div>
             </li>
 
@@ -170,22 +157,27 @@ export default {
 }
 
 
-.descripcion,
 .titulo {
-
-    text-shadow: #000000 .5px 0px 0px;
-    color: #59726f;
-    font-family: 'Fjalla One', sans-serif;
-    font-size: 30px;
-    line-height: 1.05;
-    margin-left: 40px;
+    font-size: 48px; /* Larger font size for impact */
+    font-weight: 700; /* Bolder font weight for emphasis */
+    color: #ffffff; /* White text color */
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
+    padding: 25px; /* Increased padding for a more substantial appearance */
+    border-radius: 12px; /* Slightly rounded corners for a softer look */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Enhanced text shadow for visibility */
+    margin-bottom: 25px; /* Adjusted margin for better spacing */
+    letter-spacing: 1.5px; /* Increased letter spacing for a modern touch */
+    text-align: center; /* Center-align the text */
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
 }
 
-.titulo {
-    font-size: 40px;
-    margin-bottom: 10px;
-    text-shadow: #ffffff8a .5px 0px 0px;
+.titulo:hover {
+    background-color: rgba(0, 0, 0, 0.9); /* Darken the background on hover */
+    transform: scale(1.05); /* Slightly scale up on hover for an interactive effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Increased shadow on hover */
 }
+
 
 
 .elemento {
@@ -283,17 +275,22 @@ li::marker {
 }
 
 .navegacion .boton {
-    background-color: #59726f;
-    border: 2px solid rgba(0, 0, 0, 0.6);
-    margin: 0 .5rem;
-    padding: 2rem;
-    border-radius: 50%;
+    background-color: #2a2b2a9f; /* Green button color */
+    border: none; /* Remove the border for a cleaner appearance */
+    margin: 0 20px; /* Adjusted margin for better spacing */
+    padding: 20px 40px; /* Increased padding for a larger size */
+    border-radius: 80px; /* Larger border radius for a rounded look */
     cursor: pointer;
-
+    color: #ffffff; /* White text color */
+    font-size: 30px; /* Increased font size for better visibility */
+    font-weight: 700; /* Medium font weight for balance */
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
 }
 
 .navegacion .boton:hover {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: #000000; /* Darker green button color on hover */
+    box-shadow: 0 12px 24px rgba(255, 255, 255, 0.4); /* Subtle shadow on hover */
+    transform: scale(1.08); /* Slightly scale up on hover for an interactive effect */
 }
 </style>
   
