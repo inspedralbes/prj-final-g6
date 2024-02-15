@@ -29,21 +29,21 @@
         <h2>Friends</h2>
         <div class="friend-list">
           <div class="friend-item">
-            <img src="../img/horse.png" alt="Friend 1" class="friend-avatar">
+            <img src="/img/horse.png" alt="Friend 1" class="friend-avatar">
             <div class="friend-details">
               <div class="friend-name">Rubén Cerezón</div>
               <div class="friend-status">Online</div>
             </div>
           </div>
           <div class="friend-item">
-            <img src="../img/horse.png" alt="Friend 2" class="friend-avatar">
+            <img src="/img/horse.png" alt="Friend 2" class="friend-avatar">
             <div class="friend-details">
               <div class="friend-name">José el cervezas</div>
               <div class="friend-status">Away</div>
             </div>
           </div>
           <div class="friend-item">
-            <img src="../img/horse.png" alt="Friend 2" class="friend-avatar">
+            <img src="/img/horse.png" alt="Friend 2" class="friend-avatar">
             <div class="friend-details">
               <div class="friend-name">Pol Granch</div>
               <div class="friend-status">Away</div>
@@ -161,8 +161,8 @@ export default {
   data() {
     return {
       photoGallery: [
-        { url: '../img/horse.png', caption: 'Beautiful Sunset' },
-        { url: '../img/horse.png', caption: 'Adorable Pets' },
+        { url: '/img/horse.png', caption: 'Beautiful Sunset' },
+        { url: '/img/horse.png', caption: 'Adorable Pets' },
         // Add more photo items as needed
       ],
       newPhotoFile: null,
@@ -214,7 +214,7 @@ export default {
 
     // Function to get the profile image URL (display the uploaded or default image)
     getProfileImage() {
-      return this.newProfileImage ? URL.createObjectURL(this.newProfileImage) : '../img/horse.png';
+      return this.newProfileImage ? URL.createObjectURL(this.newProfileImage) : '/img/horse.png';
     },
     handlePhotoUpload(event) {
       // Manejar la carga de nuevas fotos

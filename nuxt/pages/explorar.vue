@@ -49,7 +49,7 @@ export default {
     },
     methods: {
         async fetchData() {
-            const response = await fetch('http://localhost:8000/api/discotecas');
+            const response = await fetch('http://projectefinalg6.daw.inspedralbes.cat/laravel/backend/public/api/discotecas');
             const data = await response.json();
             this.data = data.map((discoteca) => {
                 return {

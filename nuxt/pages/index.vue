@@ -99,7 +99,7 @@ export default {
     methods: {
         async fetchData() {
 try {
-            const response = await fetch('http://localhost:8000/api/discotecas');
+            const response = await fetch('http://projectefinalg6.daw.inspedralbes.cat/laravel/backend/public/api/discotecas');
 
 
             const data = await response.json();
