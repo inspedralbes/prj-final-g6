@@ -46,6 +46,8 @@ Route::get('/discotecas/horario/{horario}', [discoController::class, 'getDiscote
 Route::post('/reviews', [reviewController::class, 'createReview']);
 // ruta para obtener todas las reviews
 Route::get('/reviews', [reviewController::class, 'getReviews']);
+// ruta para obtener todas las reviews de una discoteca pasando el id
+Route::get('/discoreviews/{id}', [reviewController::class, 'getDiscoReviews']);
 // ruta para obtener una review por id
 Route::get('/review/{id}', [reviewController::class, 'getReview']);
 // ruta para actualizar una review

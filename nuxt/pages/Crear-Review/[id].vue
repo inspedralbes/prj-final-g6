@@ -31,7 +31,7 @@ export default {
       titulo: '',
       puntuacion: 0,
       content: '',
-      photo: null // Agregamos el campo photo para almacenar la imagen seleccionada
+      photo: null 
     };
   },
   methods: {

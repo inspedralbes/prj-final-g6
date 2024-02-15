@@ -38,8 +38,15 @@ class reviewController extends Controller
         $reviews = reviewModel::all();  
         return response()->json($reviews);
     }    
+
+    public function getDiscoReviews($id){
+        $reviews = reviewModel::where('disco_id', $id)->get();
+        return response()->json($reviews);
+    }
+
+
     public function getReview($id){
-        $review = reviewModel::find($id);
+        $review = reviewModel::findOrFail($id); // Utiliza findOrFail para lanzar una excepción si no se encuentra la revisión
         return response()->json($review);
     }
     public function update(Request $request, $id)
@@ -59,8 +66,8 @@ class reviewController extends Controller
     $review->content = $request->content;
     $review->puntuacion = $request->puntuacion;
     $review->save();
+  
 
-    // Devolver la reseña actualizada
     return response()->json($review);
 }
 

@@ -28,6 +28,9 @@
                     <p>Telefono: {{ pin_seleccionado.telefono }}</p>
                     <p>Edad minima: {{ pin_seleccionado.minEdad }}</p>
                     <NuxtLink :to="'/Crear-Review/' + pin_seleccionado.id" class="btn-create-review">Crear Reseña</NuxtLink>
+                    <NuxtLink :to="'/Mostrar-Review/' + pin_seleccionado.id" class="btn-mostrar-review">Mostrar Reseñas</NuxtLink>
+
+                    
                     
                     
                 </div>
@@ -361,6 +364,20 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&display=swap');
 
 .btn-create-review {
+    background-color: var(--verde);
+    display: flex;
+    border-radius: 8px;
+    color: var(--blanco);
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    text-align: center;
+    width: 100%;
+    justify-content: center;
+    text-decoration: none;
+    margin-top: 40px;
+}
+
+.btn-mostrar-review {
     background-color: var(--verde);
     display: flex;
     border-radius: 8px;
