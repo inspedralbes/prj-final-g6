@@ -1,19 +1,20 @@
 <template>
     <div class="container">
-        <ul class='carrusel'>
-            <li class='elemento' v-for="discoteca in data" :style="{ backgroundImage: 'url(' + discoteca.imgUrl + ')' }">
-                <div class='contenido'>
-                    <h2 class='titulo'>{{ discoteca.titulo }}</h2>
-                </div>
-            </li>
-
-        </ul>
-        <nav class='navegacion'>
-            <button class='boton anterior'>&lt;</button>
-            <button class='boton siguiente'>&gt;</button>
-        </nav>
+      <ul class='carrusel'>
+        <li v-for="discoteca in data" :key="discoteca.id" class='elemento' :style="{ backgroundImage: 'url(' + discoteca.imgUrl + ')' }">
+          
+            <div class='contenido' @click="redirigir">
+              <button @click="redirigir"  class='titulo'>{{ discoteca.titulo }}</button>
+            </div>
+        
+        </li>
+      </ul>
+      <nav class='navegacion'>
+        <button class='boton anterior' @click="prevElement">&lt;</button>
+        <button class='boton siguiente' @click="nextElement">&gt;</button>
+      </nav>
     </div>
-</template>
+  </template>
   
 <script>
 
@@ -44,6 +45,9 @@ export default {
         };
     },
     methods: {
+        redirigir(){
+            navigateTo('/');
+        },
         addEventListeners() {
             this.carrusel = this.$el.querySelector('.carrusel');
 
@@ -154,6 +158,8 @@ export default {
     display: grid;
     place-items: center;
     overflow: hidden;
+    position: relative;
+    z-index: 2;
 }
 
 
@@ -238,8 +244,8 @@ export default {
     left: 10rem;
     opacity: 0;
     display: none;
-
-}
+    z-index: 1;
+}   
 
 
 .elemento:nth-of-type(2) .contenido {
