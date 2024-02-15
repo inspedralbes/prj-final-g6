@@ -58,7 +58,7 @@
 
                 <div class="main-div-3">
                     <h4>Novetat!</h4>
-                    <img src="https://placehold.co/200x460" alt="">
+                    <img src="https://placehold.co/200x360" alt="">
                 </div>
 
             </section>
@@ -118,19 +118,19 @@ export default {
     },
     methods: {
         navigateTo_ajustes() {
-            navigateTo('PERFIL/ajustes');
+            navigateTo('ajustes');
         },
         navigateTo_favoritos() {
-             navigateTo('PERFIL/favoritos');
+             navigateTo('favoritos');
         },
         navigateTo_vista() {
-             navigateTo('PERFIL/vista');
+             navigateTo('vista');
         },
         navigateTo_info_cuenta() {
-             navigateTo('PERFIL/info_cuenta');
+             navigateTo('info_cuenta');
         },
         navigateTo_chats() {
-             navigateTo('PERFIL/chats');
+             navigateTo('chats');
         },
         cambiar_tema() {
 
@@ -142,6 +142,13 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+header h1 {
+    font-size: 60px;
+    color: #723d3d;
+    font-weight: 700;
+    padding-left: 30px;
+}
 
 li {
     list-style: none;
@@ -166,14 +173,14 @@ li {
 
 .container {
     display: grid;
-    grid-template-columns: 0.3fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 0.33fr 1fr 1fr 1fr 1fr;
     grid-template-areas:
 
         "header header header header header"
         "aside info-panels info-panels info-panels info-panels"
         "aside friend-list friend-list friend-list friend-list"
     ;
-    grid-template-rows: 0.88fr auto;
+    grid-template-rows: auto 3fr 1fr;
     background-color: rgb(235, 225, 228);
     border-radius: 16px;
     padding: 20px;
@@ -317,14 +324,15 @@ aside li i:hover {
 .main-div-1,
 .main-div-2 {
     overflow-y: scroll;
-    max-height: 600px;
+    max-height: 700px;
     text-align: center;
     font-size: 20px;
 
 }
 
 .main-div-1::-webkit-scrollbar,
-.main-div-2::-webkit-scrollbar {
+.main-div-2::-webkit-scrollbar
+ {
     width: 10px;
     background-color: #723d3d42;
 }
@@ -340,7 +348,17 @@ aside li i:hover {
     background-color: #c2838357;
     padding: 10px;
     text-align: center;
-    max-height: 600px;
+    max-height: 700px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    background-color: #723d3d42;
+}	
+
+::-webkit-scrollbar-thumb {
+    background-color: #df5c5c83;
+    border-radius: 10px;
 }
 
 .main-div-3 img {
@@ -383,7 +401,8 @@ i {
     margin: 20px;
     margin-top: 0;
     padding: 20px;
-    justify-content: space-between
+    justify-content: space-between;
+    overflow-y: scroll;
 }
 
 .friend-list li img {

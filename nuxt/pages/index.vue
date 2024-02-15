@@ -7,6 +7,8 @@
                 <li><nuxt-link to="/">INICIO</nuxt-link></li>
                 <li><nuxt-link to="/explorar">EXPLORAR</nuxt-link></li>
                 <li><nuxt-link to="/PERFIL/main">PERFIL</nuxt-link></li>
+                <li><nuxt-link to="/Register">LOGIN/REGISTRARSE</nuxt-link></li>
+
             </ul>
         </nav>
         <div id="buscador"></div>
@@ -424,6 +426,7 @@ footer {
     list-style: none;
     height: 100%;
     color: var(--blanco);
+    margin-left: 10%;
 }
 
 .navbar>ul>li {
