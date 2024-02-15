@@ -2,6 +2,8 @@
     <div class="container">
         <div class="btn-create-holder"><button class="btn-create">Crear</button></div>
 
+
+
         <table class="disco-table">
             <thead>
                 <tr>
@@ -28,9 +30,8 @@
                     <td>
                         <div class="btn-holder">
                             <button @click="eliminar(disco.id)" class="btn-delete">Delete</button>
-                            <button @click="editar" class="btn-edit">Editar</button>
+                            <button @click="editar_disco(disco.id)" class="btn-edit">Editar</button>
                         </div>
-
                     </td>
                 </tr>
             </tbody>
@@ -42,7 +43,7 @@
 export default {
     data() {
         return {
-            discos: []
+            discos: [],
         };
     },
     methods: {
@@ -67,7 +68,7 @@ export default {
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
-    
+
         },
         async eliminar(id) {
             try {
@@ -86,17 +87,27 @@ export default {
                 console.error('Error fetching data:', error);
             }
         },
-        editar() {
-
-        }
+        async editar_disco(id) {
+            navigateTo(`/CRUD/LOCALES/${id}`);
+        },
     },
     mounted() {
-        this.fetchData(); // You can call fetchData on component mount
+        this.fetchData();
     }
 };
 </script>
 
 <style lang="scss" scoped>
+.form-create {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10%;
+    background-color: #191a16b0;
+    color: white;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
