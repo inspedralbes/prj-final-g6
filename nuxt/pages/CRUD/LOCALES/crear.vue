@@ -32,14 +32,16 @@
                 <input type="text" class="form-control" id="imgUrl" v-model="imgUrl">
             </div>
 
-            <button type="submit" class="btn btn-primary" @click="editar">Submit</button>
+            <div class="form-group">
+                <label for="minEdad">minEdad</label>
+                <input type="text" class="form-control" id="minEdad" v-model="minEdad">
+            </div>
+
+            <button type="submit" class="btn btn-primary" @click="crear">Submit</button>
 
         </form>
     </div>
 </template>
-  
-
-  
 
 <script>
 export default {
@@ -51,16 +53,16 @@ export default {
             horario: '',
             coordenadas: '',
             descripcion: '',
-            imgUrl: ''
+            imgUrl: '',
+            minEdad: '',
 
         };
     },
-
     methods: {
-        async editar() {
+        async crear() {
             try {
-                const response = await fetch(`http://localhost:8000/api/discotecas/${this.disco_id}`, {
-                    method: 'PUT',
+                const response = await fetch(`http://localhost:8000/api/discotecas`, {
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -71,7 +73,8 @@ export default {
                         horario: this.horario,
                         coordenadas: this.coordenadas,
                         descripcion: this.descripcion,
-                        imgUrl: this.imgUrl
+                        imgUrl: this.imgUrl,
+                        minEdad: this.minEdad,
                     }),
                 });
                 const data = await response.json();
@@ -80,19 +83,24 @@ export default {
             } catch (error) {
                 console.error(error);
             }
-        }
-    },
-    created() {
-        this.disco_id = this.$route.params.id;
+        },
     }
 }
 </script>
 
-<style scoped>
 
-*{
+<style scoped>
+* {
     font-size: 25px;
 }
+
+input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+}
+
 .custom-form-container {
     max-width: 700px;
     margin: 0 auto;
@@ -101,26 +109,19 @@ export default {
     align-items: center;
     height: 100vh;
     /* Ensures the form is centered vertically */
-    background-color: #3b85d3e1;
+    background-color: #a0cc1c;
 }
 
 .custom-form {
     padding: 15px;
     min-width: 600px;
-    border: 1px solid #ddd;
+    border: 2px solid #000000;
     border-radius: 5px;
     background-color: #fff;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
-}
 
-input {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 100%;
 }
 
 .form-group {
@@ -138,8 +139,8 @@ label {
 }
 
 .btn-primary {
-    background-color: #007bff;
-    color: #fff;
+    background-color: #a0cc1c;
+    color: #000000;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
@@ -147,6 +148,6 @@ label {
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: #c0ff04;
 }
 </style>

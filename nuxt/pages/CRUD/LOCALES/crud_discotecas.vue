@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="btn-create-holder"><button class="btn-create">Crear</button></div>
+        <div class="btn-create-holder"><button class="btn-create" @click="crear" >Crear</button></div>
 
 
 
@@ -87,9 +87,12 @@ export default {
                 console.error('Error fetching data:', error);
             }
         },
-        async editar_disco(id) {
+        editar_disco(id) {
             navigateTo(`/CRUD/LOCALES/${id}`);
         },
+        crear(){
+            navigateTo('/CRUD/LOCALES/crear');
+        }
     },
     mounted() {
         this.fetchData();

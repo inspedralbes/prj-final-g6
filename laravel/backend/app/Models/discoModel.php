@@ -10,7 +10,7 @@ class discoModel extends Model
     use HasFactory;
 
     protected $fillable
-        = ['coordenadas', 'imgUrl', 'minEdad', 'horario', 'nombre_local', 'telefono',];
+        = ['coordenadas', 'imgUrl', 'minEdad', 'horario', 'nombre_local', 'telefono', 'descripcion'];
     protected $hidden = ['created_at', 'updated_at',];
     protected $table = 'discotecas';
 }
