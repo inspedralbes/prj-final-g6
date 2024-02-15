@@ -46,7 +46,7 @@ export default {
     },
     methods: {
         redirigir(){
-            navigateTo('/');
+            navigateTo('/Gallery');
         },
         addEventListeners() {
             this.carrusel = this.$el.querySelector('.carrusel');
