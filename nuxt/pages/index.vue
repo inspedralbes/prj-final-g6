@@ -6,7 +6,7 @@
                 <li></li>
                 <li><nuxt-link to="/">INICIO</nuxt-link></li>
                 <li><nuxt-link to="/explorar">EXPLORAR</nuxt-link></li>
-                <li><nuxt-link to="/">PERFIL</nuxt-link></li>
+                <li><nuxt-link to="/perfil">PERFIL</nuxt-link></li>
             </ul>
         </nav>
         <div id="buscador"></div>
@@ -28,8 +28,8 @@
                     <p>Telefono: {{ pin_seleccionado.telefono }}</p>
                     <p>Edad minima: {{ pin_seleccionado.minEdad }}</p>
                     <NuxtLink :to="'/Crear-Review/' + pin_seleccionado.id" class="btn-create-review">Crear Reseña</NuxtLink>
-                    
-                    
+
+
                 </div>
             </div>
         </div>
@@ -355,8 +355,6 @@ export default {
 
 
 <style>
-
-
 @import url('https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css');
 @import url('https://fonts.googleapis.com/css2?family=Antonio:wght@700&display=swap');
 
@@ -592,7 +590,4 @@ footer {
     text-decoration: none;
     font-size: 0;
 }
-
-
-
 </style>
