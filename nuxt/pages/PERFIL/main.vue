@@ -3,7 +3,7 @@
         <div class="container">
 
             <header>
-                <h1>Viaegis</h1>
+                <nuxt-link to="/PERFIL/main"><h1>VIAEGIS</h1></nuxt-link>
 
                 <li class="li-search-i-holder">
                     <input type="text" placeholder="Search" class="searchbar">
