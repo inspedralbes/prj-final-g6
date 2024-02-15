@@ -8,9 +8,9 @@
                 <li class="li-search-i-holder">
                     <input type="text" placeholder="Search" class="searchbar">
                     <i class="material-icons">search</i>
-              </li>
+                </li>
 
-                <li @click="cambiar_tema" ><i class="material-icons">contrast</i></li>
+                <li @click="cambiar_tema"><i class="material-icons">contrast</i></li>
 
                 <li><i class="material-icons">account_circle</i></li>
 
@@ -98,7 +98,7 @@
                 <li><img src="https://placehold.co/100x100" alt=""></li>
                 <li><img src="https://placehold.co/100x100" alt=""></li>
                 <li><img src="https://placehold.co/100x100" alt=""></li>
-       
+
             </section>
 
 
@@ -114,27 +114,26 @@ export default {
         }
     },
     head() {
-       
+
     },
     methods: {
-      
         navigateTo_ajustes() {
-            navigateTo('ajustes');
+            navigateTo('PERFIL/ajustes');
         },
         navigateTo_favoritos() {
-            navigateTo('favoritos');
+             navigateTo('PERFIL/favoritos');
         },
         navigateTo_vista() {
-            navigateTo('vista');
+             navigateTo('PERFIL/vista');
         },
         navigateTo_info_cuenta() {
-            navigateTo('info_cuenta');
+             navigateTo('PERFIL/info_cuenta');
         },
         navigateTo_chats() {
-            navigateTo('chats');
+             navigateTo('PERFIL/chats');
         },
         cambiar_tema() {
-            
+
         }
     },
 }
@@ -142,7 +141,6 @@ export default {
 
 
 <style scoped>
-
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 li {
@@ -163,7 +161,7 @@ li {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    
+
 }
 
 .container {
@@ -294,6 +292,7 @@ aside li i:hover {
     font-weight: 700;
     margin: auto;
 }
+
 .li-search-i-holder {
     display: flex;
     align-items: center;
@@ -321,7 +320,7 @@ aside li i:hover {
     max-height: 600px;
     text-align: center;
     font-size: 20px;
-  
+
 }
 
 .main-div-1::-webkit-scrollbar,
@@ -343,14 +342,15 @@ aside li i:hover {
     text-align: center;
     max-height: 600px;
 }
-.main-div-3	img{
-   
+
+.main-div-3 img {
+
     border-radius: 16px;
     border: 5px solid #1d1c1c;
     margin-top: 30px;
     margin-left: auto;
     margin-right: auto;
-}   
+}
 
 .info-panels ul {
     list-style: none;
@@ -359,9 +359,10 @@ aside li i:hover {
 
 }
 
-i{
+i {
     font-size: 60px;
 }
+
 .info-panels ul i {
 
     color: #723d3d;
@@ -383,8 +384,6 @@ i{
     margin-top: 0;
     padding: 20px;
     justify-content: space-between
-
-
 }
 
 .friend-list li img {
