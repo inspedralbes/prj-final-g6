@@ -13,7 +13,6 @@
             <th>Valoración</th>
             <th>Discoteca</th>
             <th>Acciones</th>
-            <th>Foto</th>
           </tr>
         </thead>
         <tbody>
@@ -48,13 +47,6 @@
                   Eliminar
                 </button>
               </div>
-            </td>
-            <td>
-              <img
-                :src="review.photo"
-                alt="Foto de la reseña"
-                style="max-width: 100px; max-height: 100px"
-              />
             </td>
           </tr>
         </tbody>
@@ -134,6 +126,7 @@ export default {
       }
     },
   },
+
   mounted() {
     this.fetchReviews();
   },

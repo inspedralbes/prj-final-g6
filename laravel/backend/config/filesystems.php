@@ -55,6 +55,12 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+        'fotos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/fotos'), 
+            'url' => env('APP_URL').'/storage/fotos', 
+            'visibility' => 'public',
+        ],
 
     ],
 
