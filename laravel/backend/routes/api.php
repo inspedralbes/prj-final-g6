@@ -27,7 +27,6 @@ Route::get('/users', [userController::class, 'getUsers']);
 Route::post('/users', [userController::class, 'create']);
 // ruta para borrar un usuario
 Route::delete('/users/{id}', [userController::class, 'delete']);
-
 // ruta para editar un usuario
 Route::put('/users/{id}', [userController::class, 'update']);
 

@@ -1,6 +1,7 @@
 <template>
     <div class="container">
-      
+        <div class="btn-create-holder"><button class="btn-create" @click="crear">Crear</button></div>
+
         <table class="user-table">
             <thead>
                 <tr>
@@ -22,7 +23,7 @@
                     <td>
                         <div class="btn-holder">
                             <button @click="eliminar(user.id)" class="btn-delete">Delete</button>
-                            <button @click="editar" class="btn-edit">Editar</button>
+                            <button @click="editar(user.id)" class="btn-edit">Editar</button>
                         </div>
 
                     </td>
@@ -77,8 +78,11 @@ export default {
                 console.error('Error fetching data:', error);
             }
         },
-        editar() {
-
+        editar(id) {
+            navigateTo(`/CRUD/USUARIOS/${id}`);
+        },
+        crear() {
+            navigateTo('/CRUD/USUARIOS/crear');
         }
     },
     mounted() {
@@ -88,6 +92,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.btn-create-holder {
+    background-color: #a0cc1c;
+    position: sticky;
+    top: 0px;
+    padding: 50px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.btn-create-holder>button {
+    font-size: 50px;
+}
+
+.btn-create:hover {
+    color: #fff;
+}
+
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -101,7 +125,6 @@ export default {
     align-items: center;
     justify-content: center;
     overflow-y: scroll;
-
 
 }
 
@@ -155,20 +178,10 @@ export default {
 .btn-holder {
     display: flex;
     justify-content: space-around;
-    
-}
-
-
-.btn-create {
-    background-color: #a0cc1c;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 24px;
 
 }
+
+
 
 
 .btn-delete {
@@ -193,13 +206,12 @@ export default {
 }
 
 .btn-delete:hover {
-   
-   background-color: #e60303;
+
+    background-color: #e60303;
 }
+
 .btn-edit:hover {
-  
-   background-color: #088ce4;
+
+    background-color: #088ce4;
 }
-
-
 </style>

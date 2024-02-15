@@ -101,6 +101,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.btn-create:hover{
+    color: whitesmoke;
+}
 .form-create {
     display: flex;
     flex-direction: column;
