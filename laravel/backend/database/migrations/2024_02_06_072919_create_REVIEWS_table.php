@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('titulo');
             $table->text('content');
             $table->unsignedInteger('puntuacion');
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }

@@ -16,6 +16,7 @@ class reviewModel extends Model
         'titulo',
         'puntuacion',
         'content',
+        'photo',
 
     ];
     protected $table = 'reviews';

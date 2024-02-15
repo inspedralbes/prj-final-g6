@@ -15,6 +15,7 @@ class reviewController extends Controller
         $review->titulo = $request->titulo;
         $review->content = $request->content;
         $review->puntuacion = $request->puntuacion;
+        $review->photo = $request->photo;
         $review->save();
         return response()->json($review);
     }
@@ -29,7 +30,7 @@ class reviewController extends Controller
     public function update(Request $request, $id)
 {
     $request->validate([
-        'usuario_id' => 'required',
+        'usuario_id' => '',
         'disco_id' => 'required',
         'titulo' => 'required',
         'content' => 'required',
