@@ -6,10 +6,12 @@ use App\Http\Controllers\userController;
 use Illuminate\Support\Facades\Auth;
 
 
+
+// RUTAS DE USUARIO
 Route::get('/csrf-token', function () {
     return csrf_token();
 });
-
+// middleware usuarios
 Route::middleware(['api'])->group(function () {
     Route::get('/user', function() {
         return Auth::user();
@@ -19,11 +21,19 @@ Route::middleware(['api'])->group(function () {
     Route::post('/register', [userController::class, 'register']);
 });
 
-
-
-
-//ruta para obtener todos los usuarios
+// ruta para obtener todos los usuarios
 Route::get('/users', [userController::class, 'getUsers']);
+// ruta para crear un usuario
+Route::post('/users', [userController::class, 'create']);
+// ruta para borrar un usuario
+Route::delete('/users/{id}', [userController::class, 'delete']);
+
+// ruta para editar un usuario
+Route::put('/users/{id}', [userController::class, 'update']);
+
+
+
+// RUTAS DE DISCOTECAS
 // ruta para obtener todas las discotecas
 Route::get('/discotecas', [discoController::class, 'getDiscotecas']);
 // ruta para obtener una discoteca por id
@@ -33,7 +43,7 @@ Route::post('/discotecas', [discoController::class, 'createDiscoteca']);
 // ruta para actualizar una discoteca
 Route::put('/discotecas/{id}', [discoController::class, 'updateDiscoteca']);
 // ruta para borrar una discoteca
-Route::delete('/discotecas/{id}', [discoController::class, 'deleteDiscoteca']);
+Route::delete('/discotecas/{id}', [discoController::class, 'delete']);
 // ruta para obtener las discotecas por nombre
 Route::get('/discotecas/nombre/{nombre_local}', [discoController::class, 'getDiscotecasByName']);
 // ruta para obtener las discotecas por edad
@@ -42,10 +52,11 @@ Route::get('/discotecas/edad/{minEdad}', [discoController::class, 'getDiscotecas
 Route::get('/discotecas/horario/{horario}', [discoController::class, 'getDiscotecasBySchedule']);
 
 
+// RUTAS DE REVIEWS
 // ruta para crear una review
 Route::post('/reviews', [reviewController::class, 'createReview']);
 // ruta para obtener todas las reviews
-Route::get('/reviews/{id}', [reviewController::class, 'getReviews']);
+Route::get('/reviews', [reviewController::class, 'getReviews']);
 // ruta para obtener una review por id
 Route::get('/review/{id}', [reviewController::class, 'getReview']);
 // ruta para actualizar una review

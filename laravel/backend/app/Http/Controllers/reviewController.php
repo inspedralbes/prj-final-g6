@@ -18,9 +18,12 @@ class reviewController extends Controller
         $review->save();
         return response()->json($review);
     }
-    public function getReviews($id){
-        $reviews = reviewModel::where('disco_id', $id)->get();
+    public function getReviews(){
+        $reviews = reviewModel::all();
+
         return response()->json($reviews);
+
+    
     }
     public function getReview($id){
         $review = reviewModel::find($id);

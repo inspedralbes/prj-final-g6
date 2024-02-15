@@ -47,11 +47,23 @@ class discoController extends Controller
 
     // funcion para borrar una discoteca
 
-    public function deleteDiscoteca($id)
-    {
-        $discoteca = discoModel::find($id);
-        $discoteca->delete();
-        return $discoteca;
+
+
+    public function delete($id){
+        $discotecas = discoModel::find($id);
+        
+        if (!$discotecas) {
+            return response()->json([
+                "status" => 0,
+                "msg" => "Discoteca no encontrada",
+            ], 404);
+        }
+    
+        $discotecas->delete();
+        return response()->json([
+            "status" => 1,
+            "msg" => "Discoteca eliminada exitosamente",
+        ]);
     }
 
     // funcion para obtener las discotecas por nombre

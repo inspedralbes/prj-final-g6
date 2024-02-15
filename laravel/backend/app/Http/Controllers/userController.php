@@ -36,6 +36,66 @@ class userController extends Controller
         ]);
     }
 
+    public function delete($id){
+        $user = usuarioModel::find($id);
+        
+        if (!$user) {
+            return response()->json([
+                "status" => 0,
+                "msg" => "Usuario no encontrado",
+            ], 404);
+        }
+    
+        $user->delete();
+        return response()->json([
+            "status" => 1,
+            "msg" => "Usuario eliminado exitosamente",
+        ]);
+    }
+    
+
+    public function update(Request $request, $id){
+        $user = usuarioModel::find($id);
+        $user->nombre = $request->nombre;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->birthdate = $request->birthdate;
+        $user->password = Hash::make($request->password);
+        $user->save();
+        return response()->json([
+            "status" => 1,
+            "msg" => "Usuario actualizado exitosamente",
+        ]);
+    }
+
+    public function create(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required',
+            'password2' => 'required|same:password',
+            'phone' => 'required',
+            'birthdate' => 'required',
+        ]);
+
+        $user = new usuarioModel();
+        $user->nombre = $request->nombre;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->birthdate = $request->birthdate;
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+
+        return response()->json([
+            "status" => 1,
+            "msg" => "Registro exitoso",
+        ]);
+    }
+    
+
+
     public function login(Request $request)
     {
         $request->validate([
@@ -47,9 +107,9 @@ class userController extends Controller
 
         if (isset($user->id)) {
             if (Hash::check($request->password, $user->password)) {
-              
+
                 $token = $user->createToken("auth_token")->plainTextToken;
-                
+
                 //si esta todo bien
                 return response()->json([
                     "status" => 1,
@@ -97,15 +157,15 @@ class userController extends Controller
     public function updateUserProfile(Request $request)
     {
         $user = auth()->user();
-    
+
         // Aquí debes agregar la lógica para actualizar el perfil del usuario
         //Puedes utilizar  $request->input('name') y $request->input('email');
-       
-        
+
+
         // Ejemplo de actualización del nombre del usuario
         $user->name = $request->input('name');
         $user->save();
-    
+
         return response()->json([
             "status" => 1,
             "msg" => "Perfil del usuario actualizado exitosamente",
@@ -115,11 +175,9 @@ class userController extends Controller
     public function getUsers()
     {
         $users = usuarioModel::all();
-        return response()->json([
-            "status" => 1,
-            "msg" => "Lista de usuarios",
-            "data" => $users
-        ]);
+        return response()->json(
+            $users
+        );
     }
 
 

@@ -1,27 +1,33 @@
 <template>
     <div class="container">
-      
-        <table class="user-table">
+        <div class="btn-create-holder"><button class="btn-create">Crear</button></div>
+
+        <table class="disco-table">
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Teléfono</th>
-                    <th>Fecha de Nacimiento</th>
+                    <th>Nombre Local</th>
+                    <th>Telefono</th>
+                    <th>Horario</th>
+                    <th>Coordenadas</th>
+                    <th>Descripcion</th>
+                    <th>imgUrl</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="user in users" :key="user.id" class="user-table-item">
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.nombre }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.phone }}</td>
-                    <td>{{ user.birthdate }}</td>
+                <tr v-for="disco in discos" :key="disco.id" class="disco-table-item">
+                    <td>{{ disco.id }}</td>
+                    <td>{{ disco.nombre_local }}</td>
+                    <td>{{ disco.telefono }}</td>
+                    <td>{{ disco.horario }}</td>
+                    <td>{{ disco.coordenadas }}</td>
+                    <td>{{ disco.descripcion }}</td>
+                    <td>{{ disco.imgUrl }}</td>
+
                     <td>
                         <div class="btn-holder">
-                            <button @click="eliminar(user.id)" class="btn-delete">Delete</button>
+                            <button @click="eliminar(disco.id)" class="btn-delete">Delete</button>
                             <button @click="editar" class="btn-edit">Editar</button>
                         </div>
 
@@ -36,22 +42,24 @@
 export default {
     data() {
         return {
-            users: []
+            discos: []
         };
     },
     methods: {
         async fetchData() {
             try {
-                const response = await fetch('http://localhost:8000/api/users');
+                const response = await fetch('http://localhost:8000/api/discotecas');
                 const data = await response.json();
 
                 if (Array.isArray(data)) {
-                    this.users = data.map((usuario) => ({
-                        id: usuario.id,
-                        nombre: usuario.nombre,
-                        email: usuario.email,
-                        phone: usuario.phone,
-                        birthdate: usuario.birthdate,
+                    this.discos = data.map((disco) => ({
+                        id: disco.id,
+                        nombre_local: disco.nombre_local,
+                        telefono: disco.telefono,
+                        horario: disco.horario,
+                        coordenadas: JSON.parse(disco.coordenadas),
+                        descripcion: disco.descripcion,
+                        imgUrl: disco.imgUrl,
                     }));
                 } else {
                     console.error('Data is not an array:', data);
@@ -59,10 +67,11 @@ export default {
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
+    
         },
         async eliminar(id) {
             try {
-                const response = await fetch(`http://localhost:8000/api/users/${id}`, {
+                const response = await fetch(`http://localhost:8000/api/discotecas/${id}`, {
                     method: 'DELETE',
                 });
                 const data = await response.json();
@@ -71,7 +80,7 @@ export default {
                     this.fetchData();
                     console.log('Usuario con id ' + id + ' eliminado', data.msg);
                 } else {
-                    console.error('Error deleting user:', data.msg);
+                    console.error('Error deleting disco:', data.msg);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -101,8 +110,6 @@ export default {
     align-items: center;
     justify-content: center;
     overflow-y: scroll;
-
-
 }
 
 ::-webkit-scrollbar {
@@ -125,28 +132,29 @@ export default {
     width: 40px;
 }
 
-.user-table {
+.disco-table {
+
     background-color: #f2f2f2;
     width: 90%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 15%;
 }
 
-.user-table-item:nth-child(even) {
+.disco-table-item:nth-child(even) {
     background-color: #dfdfdf;
 }
 
-.user-table-item:nth-child(odd) {
+.disco-table-item:nth-child(odd) {
     background-color: #fff;
 }
 
-.user-table th {
+.disco-table th {
     border: 3px solid #191a16;
     padding: 20px;
     text-align: left;
 }
 
-.user-table td {
+.disco-table td {
     border: 1px solid #191a16;
     padding: 14px;
     text-align: left;
@@ -155,19 +163,24 @@ export default {
 .btn-holder {
     display: flex;
     justify-content: space-around;
-    
+
 }
 
 
-.btn-create {
+.btn-create-holder {
     background-color: #a0cc1c;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 24px;
+    position: sticky;
+    top: 0;
+    padding: 50px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+    width: 100%;
+}
+
+.btn-create-holder>button {
+    font-size: 50px;
 }
 
 
@@ -193,13 +206,12 @@ export default {
 }
 
 .btn-delete:hover {
-   
-   background-color: #e60303;
+
+    background-color: #e60303;
 }
+
 .btn-edit:hover {
-  
-   background-color: #088ce4;
+
+    background-color: #088ce4;
 }
-
-
 </style>
