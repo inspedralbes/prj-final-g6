@@ -6,7 +6,30 @@
       <select id="city" v-model="selectedCity" @change="filterImages">
         <option value="">Todas</option>
         <option value="1">Barcelona</option>
-        <!-- Añade más ciudades según sea necesario -->
+        <option value="2">Zaragoza</option>
+        <option value="3">Madrid</option>
+        <option value="4">Bilbao</option>
+        <option value="5">Ibiza</option>
+        <option value="6">Huesca</option>
+        <option value="7">Galicia</option>
+        <option value="8">Cordoba</option>
+        <option value="9">Sevilla</option>
+        <option value="10">Valencia</option>
+        <option value="11">Granada</option>
+        <option value="12">Malaga</option>
+        <option value="13">Santander</option>
+        <option value="14">Salamanca</option>
+        <option value="15">Alicante</option>
+        <option value="16">Murcia</option>
+        <option value="17">Toledo</option>
+        <option value="18">Valladolid</option>
+        <option value="19">Pamplona</option>
+        <option value="20">A Coruña</option>
+        <option value="21">Zamora</option>
+        <option value="22">Almeria</option>
+        <option value="23">Caceres</option>
+        <option value="24">Girona</option>
+        <option value="25">Jaen</option>
       </select>
     </div>
     <div class="gallery grid gap-4">
@@ -41,8 +64,11 @@ export default {
   async created() {
     this.loading = true;
     try {
-      const response = await axios.get('http://localhost:8000/api/discotecas'); // Reemplaza 'URL_DE_TU_API' con la URL de tu API
-      this.images = response.data.map(item => ({ url: item.imgUrl, cityId: item.id_ciudad })); // Asegúrate de que 'imgUrl' y 'id_ciudad' son las propiedades correctas
+      const response = await axios.get('http://localhost:8000/api/discotecas');
+      this.images = response.data.map(item => ({
+        url: item.imgUrl,
+        cityId: item.id_ciudad !== null ? item.id_ciudad.toString() : null
+      }));
       this.filteredImages = [...this.images];
     } catch (error) {
       console.error('Error al cargar las imágenes:', error);
@@ -61,7 +87,9 @@ export default {
       if (this.selectedCity === '') {
         this.filteredImages = [...this.images];
       } else {
-        this.filteredImages = this.images.filter(image => image.cityId.toString() === this.selectedCity);
+        this.filteredImages = this.images.filter(image => {
+          return image.cityId !== null && image.cityId.toString() === this.selectedCity.toString();
+        });
       }
     },
   },
