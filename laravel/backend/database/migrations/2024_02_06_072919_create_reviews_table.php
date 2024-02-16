@@ -18,6 +18,9 @@ return new class extends Migration {
             $table->foreign('disco_id')->references('id')->on('discotecas')->onDelete('cascade');
             $table->string('titulo');
             $table->text('content');
+            $table->integer('likes')->default(0);
+            $table->integer('dislikes')->default(0);
+            $table->string('photo')->nullable();
             $table->unsignedInteger('puntuacion');
             $table->timestamps();
         });
@@ -28,7 +31,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('REVIEWS');
+        Schema::dropIfExists('reviews');
 
     }
 };

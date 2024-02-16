@@ -187,7 +187,7 @@ export default {
 .info-contacte p,
 .info-seguretat p {
     font-size: 20px;
-    margin-top: 20px;
+    margin-bottom: 5px;
     color: #c5b8b8;
 
 }
@@ -198,7 +198,7 @@ export default {
 
     border-radius: 16px;
     color: #000;
-    font-size: 35px;
+    font-size: 30px;
 
     font-weight: 700;
     border: none;
@@ -215,17 +215,18 @@ export default {
         "h1"
         "p"
     ;
-    max-height: 300px;
-    width: 60%;
+    max-height: 500px;
+    width: 70%;
+  
     margin-left: auto;
     margin-right: auto;
     background-color: #383030f5;
-    padding: 40px;
+  
     border-radius: 16px;
-    margin: 20px;
+    margin: 10px;
     justify-items: center;
     justify-self: center;
-
+    align-content: center;
 }
 
 .info-contacte>div,
@@ -234,8 +235,9 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    margin-top: 20px;
+    width: 90%;
+    height: auto;
+    //margin-top: 20px;
     background-color: #ddddddb0;
     border-radius: 16px;
     padding: 20px;
@@ -367,6 +369,7 @@ li {
         "aside info-seguretat info-seguretat info-seguretat info-seguretat";
 
     ;
+    grid-template-rows: repeat(4, auto);
 
 
     grid-template-rows: auto auto auto auto;
