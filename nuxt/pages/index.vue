@@ -8,9 +8,9 @@
                 <li><nuxt-link to="/explorar">EXPLORAR</nuxt-link></li>
                 <li><nuxt-link to="/PERFIL/main">PERFIL</nuxt-link></li>
                 <li><nuxt-link to="/Register">LOGIN/REGISTRARSE</nuxt-link></li>
-
             </ul>
         </nav>
+        
         <div id="buscador"></div>
 
         <div id="map" ref="map" style="height: 100%; width: 100%;"></div>
@@ -22,16 +22,19 @@
                     <div class="card-closer" @click="cerrarPopUp">X</div>
                 </div>
                 <div class="card-body">
-                    <img :src="'https://via.placeholder.com/200'" alt="imagen de la discoteca"
-                        style="width: 100%; height: 200px; object-fit: cover;">
+                    <img :src="pin_seleccionado.imgUrl" alt="imagen de la discoteca" style="width: 100%; height: 200px; object-fit: cover;">
 
                     <p>Sobre el local: {{ pin_seleccionado.descripcion }}</p>
                     <p>Horario: {{ pin_seleccionado.horario }}</p>
                     <p>Telefono: {{ pin_seleccionado.telefono }}</p>
                     <p>Edad minima: {{ pin_seleccionado.minEdad }}</p>
+                    
+                    <!-- Reproductor de música -->
+                    <audio controls :src="pin_seleccionado.cancionUrl">
+                        Tu navegador no soporta el elemento de audio.
+                    </audio>
+
                     <NuxtLink :to="'/CRUD/REVIEWS/Crear-Review/' + pin_seleccionado.id" class="btn-create-review">Crear Reseña</NuxtLink>
-
-
                 </div>
             </div>
         </div>
@@ -124,31 +127,24 @@ export default {
 
     methods: {
         async fetchData() {
-
             const response = await fetch('http://localhost:8000/api/discotecas');
-
-
             const data = await response.json();
 
             this.data = data.map((discoteca) => {
-
                 return {
                     id: discoteca.id,
                     titulo: discoteca.nombre_local,
                     coordenadas: JSON.parse(discoteca.coordenadas),
-                    imgUrl: discoteca.imgUrl,
+                    imgUrl: discoteca.imgUrl, // Asumiendo que hay una propiedad imgUrl en tu base de datos
                     descripcion: discoteca.descripcion,
                     telefono: discoteca.telefono,
                     horario: discoteca.horario,
                     minEdad: discoteca.minEdad,
                 };
-
             });
 
             this.crear_mostrar_pines_discos();
             this.añadir_popup_info_de_las_discos();
-
-
         },
         initMapaDatosMapBox() {
             mapboxgl.accessToken = 'pk.eyJ1IjoiYTIyam9zbGFyZmVyIiwiYSI6ImNsczIwdDY5YTBldncyc21rbmI4cnVjY3oifQ.mWjSoIuuwJmMG0EFCU_gEA';

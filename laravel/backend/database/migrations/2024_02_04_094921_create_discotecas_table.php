@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('nombre_local');
             $table->string('telefono');
             $table->timestamps();
+            $table->string('descripcion');
+            $table->foreignId('id_ciudades')->constrained('ciudades');
         });
     }
 
