@@ -58,7 +58,7 @@
 
                 <div class="main-div-3">
                     <h4>Novetat!</h4>
-                    <img src="https://placehold.co/200x360" alt="">
+                    <img src="https://cdn.computerhoy.com/sites/navi.axelspringer.es/public/media/image/2023/09/fin-discotecas-cierres-masivos-porque-jovenes-ya-no-gustan-3142114.jpg?tf=3840x" alt="">
                 </div>
 
             </section>
@@ -111,6 +111,7 @@ export default {
     data() {
         return {
             // data
+            isDarkTheme: false,
         }
     },
     head() {
@@ -133,8 +134,15 @@ export default {
              navigateTo('chats');
         },
         cambiar_tema() {
+            console.log('cambiando tema');
+        this.isDarkTheme = !this.isDarkTheme;
 
-        }
+        document.body.classList.toggle('dark-theme', this.isDarkTheme);
+
+        const container = document.querySelector('.container');
+        container.classList.toggle('dark-theme', this.isDarkTheme);
+    },
+        
     },
 }
 </script>
@@ -171,6 +179,7 @@ li {
 
 }
 
+
 .container {
     display: grid;
     grid-template-columns: 0.33fr 1fr 1fr 1fr 1fr;
@@ -187,13 +196,18 @@ li {
 
 }
 
+/* Dark theme styles */
+.container.dark-theme {
+    background-color: #1a1a1a;
+    color: #fff; /* Set appropriate text color */
+}
 .container header {
     grid-area: header;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    background-color: #c28383;
+    background-color: #838fc2;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     border-bottom-left-radius: 0px;
@@ -210,7 +224,7 @@ li {
 aside {
     display: flex;
     flex-direction: column;
-    background-color: #c28383;
+    background-color: #838fc2;
     grid-area: aside;
 }
 
@@ -256,13 +270,13 @@ aside li i:hover {
 
 .main-div-1 {
     grid-area: div1;
-    background-color: #c2838357;
+    background-color: #8394c257;
     padding: 10px;
 }
 
 .main-div-2 {
     grid-area: div2;
-    background-color: #c2838357;
+    background-color: #8394c257;
     padding: 10px;
 }
 
@@ -283,11 +297,17 @@ aside li i:hover {
     border-radius: 0;
     border-top-left-radius: 16px;
     border-bottom-left-radius: 16px;
-    border-bottom: 2px solid #723d3d;
-    border-left: 5px solid #723d3d;
+    border-bottom: 2px solid #8394c257;
+    border-left: 5px solid #8394c257;
+    
 }
-
-
+.main-div-3>img{
+    width: 260px;
+    height: 220px;
+    border-radius: 16px;
+    border: 5px solid #1d1c1c;
+   
+}
 .searchbar {
     padding: 15px;
     border-radius: 16px;
@@ -339,13 +359,13 @@ aside li i:hover {
 
 .main-div-1::-webkit-scrollbar-thumb,
 .main-div-2::-webkit-scrollbar-thumb {
-    background-color: #df5c5c83;
+    background-color: #5c65df83;
     border-radius: 10px;
 }
 
 .main-div-3 {
     grid-area: div3;
-    background-color: #c2838357;
+    background-color: #8394c257;
     padding: 10px;
     text-align: center;
     max-height: 700px;
@@ -357,7 +377,7 @@ aside li i:hover {
 }	
 
 ::-webkit-scrollbar-thumb {
-    background-color: #df5c5c83;
+    background-color: #5c65df83;
     border-radius: 10px;
 }
 
@@ -389,7 +409,7 @@ i {
 }
 
 .info-panels ul i:hover {
-    color: #df5c5c;
+    color: #5cd6df;
 }
 
 .friend-list {
@@ -403,6 +423,7 @@ i {
     padding: 20px;
     justify-content: space-between;
     overflow-y: scroll;
+
 }
 
 .friend-list li img {
@@ -415,7 +436,7 @@ i {
 }
 
 .friend-list li img:hover {
-    border: 3px solid coral;
+    border: 3px solid rgba(230, 148, 241, 0.87);
 
 }
 </style>

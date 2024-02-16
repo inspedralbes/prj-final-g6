@@ -23,7 +23,7 @@
                         <label for="terms">Acepto las condiciones y términos</label>
                     </div>
                     <button type="submit" class="button">Regístrate</button>
-                    <div class="text">¿Ya tienes cuenta? ¡Inicia sesión!</div>
+                    <div class="text">¿Ya tienes cuenta? <nuxt-link to="/login">¡Inicia sesión!</nuxt-link></div>
                 </form>
             </div>
         </div>
