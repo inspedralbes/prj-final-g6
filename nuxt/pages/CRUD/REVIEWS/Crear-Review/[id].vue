@@ -53,7 +53,7 @@ export default {
             throw new Error(`Error al enviar la reseña: ${response.status} - ${response.statusText}`);
           }
           console.log('Reseña enviada correctamente');
-          navigateTo('../crud_reviews');
+          navigateTo('/');
         })
         .catch(error => {
           console.error('Error al enviar la reseña:', error);
