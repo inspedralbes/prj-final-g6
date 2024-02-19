@@ -14,7 +14,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
 
     const login = async (data: any) => {
         try {
-            // Assuming your Laravel login endpoint is '/login'
+      
             const response = await fetch("http://localhost:8000/api/login", {
                 method: "POST",
                 headers: {
@@ -26,11 +26,9 @@ export const useUsuarioStore = defineStore("usuario", () => {
             });
 
             const res = await response.json();
-
-            // Assuming your Laravel sends the token in the response
+           
             setToken(res.token);
 
-            // Fetch user details after successful login
             await fetchUser();
         } catch (error) {
             setUser();
@@ -42,7 +40,7 @@ export const useUsuarioStore = defineStore("usuario", () => {
     const fetchUser = async () => {
         if (token.value) {
             try {
-                // Assuming your Laravel user details endpoint is '/user'
+      
                 const response = await $fetch<get__usuario>("http://localhost:8000/api/user", {
                     method: "GET",
                 }); 
@@ -57,11 +55,12 @@ export const useUsuarioStore = defineStore("usuario", () => {
 
     const register = async (data: any) => {
         try {
-            // Assuming your Laravel register endpoint is '/register'
+ 
             const res = await $fetch<get__usuario>("http://localhost:8000/api/register", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                 },
                 body: JSON.stringify(data),
             });

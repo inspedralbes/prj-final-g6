@@ -14,7 +14,7 @@ class userController extends Controller
     {
         $request->validate([
             'nombre' => 'required',
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:usuarios,email',
             'password' => 'required',
             'password2' => 'required|same:password',
             'phone' => 'required',
@@ -30,31 +30,40 @@ class userController extends Controller
 
         $user->save();
 
-        return response()->json([
+        /*
+
+            return response()->json([
             "status" => 1,
             "msg" => "Registro exitoso",
         ]);
+        
+        */
+        $token = $user->createToken("auth_token")->plainTextToken;
+        return ($token);
+
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $user = usuarioModel::find($id);
-        
+
         if (!$user) {
             return response()->json([
                 "status" => 0,
                 "msg" => "Usuario no encontrado",
             ], 404);
         }
-    
+
         $user->delete();
         return response()->json([
             "status" => 1,
             "msg" => "Usuario eliminado exitosamente",
         ]);
     }
-    
 
-    public function update(Request $request, $id){
+
+    public function update(Request $request, $id)
+    {
         $user = usuarioModel::find($id);
         $user->nombre = $request->nombre;
         $user->email = $request->email;
@@ -93,7 +102,7 @@ class userController extends Controller
             "msg" => "Registro exitoso",
         ]);
     }
-    
+
 
 
     public function login(Request $request)

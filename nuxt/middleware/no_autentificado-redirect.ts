@@ -3,6 +3,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   // User not logged in
   if (!usuarioStore.user) {
-    return await navigateTo('/auth/login/');
+    return await navigateTo('/AUTH/login/');
   }
 });
