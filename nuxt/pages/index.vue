@@ -104,7 +104,7 @@ export default {
                                 this.personesAprop({ latitude, longitude }, coordenada1)
                             ) {
                                 //pedralbes
-                                this.programarNotificacio(9, 33);
+                                this.programarNotificacio(9, 37);
                             } else if (
                                 //pacha
                                 this.personesAprop({ latitude, longitude }, coordenada2)
