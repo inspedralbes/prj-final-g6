@@ -14,7 +14,10 @@
     "@nuxtjs/tailwindcss": "^6.11.3",
     "cypress": "^13.6.4",
 <<<<<<< HEAD
+<<<<<<< HEAD
     "cypress-file-upload": "^5.0.8",
+=======
+>>>>>>> 69ea7eb8 (cypress)
 =======
 >>>>>>> 69ea7eb8 (cypress)
     "nuxt": "^3.10.1",
