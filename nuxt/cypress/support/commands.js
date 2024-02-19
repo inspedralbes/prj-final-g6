@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 // Importa el plugin cypress-file-upload
 import 'cypress-file-upload';
 
+=======
+>>>>>>> a1bb890fb1542d8715b7cd93f807bfa5b03eeb18
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
