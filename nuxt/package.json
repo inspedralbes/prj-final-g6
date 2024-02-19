@@ -13,19 +13,7 @@
     "@formkit/auto-animate": "^0.8.1",
     "@nuxtjs/tailwindcss": "^6.11.3",
     "cypress": "^13.6.4",
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     "cypress-file-upload": "^5.0.8",
-=======
->>>>>>> 69ea7eb8 (cypress)
-=======
->>>>>>> 69ea7eb8 (cypress)
-=======
-    "cypress-file-upload": "^5.0.8",
-=======
->>>>>>> 69ea7eb8 (cypress)
->>>>>>> 14946437520f19dd3fb06aae6aa8aba0d54cfac8
     "nuxt": "^3.10.1",
     "sass": "^1.70.0",
     "tailwindcss": "^3.4.1",
