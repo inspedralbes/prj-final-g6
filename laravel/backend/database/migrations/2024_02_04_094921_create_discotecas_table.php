@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('horario');
             $table->string('nombre_local');
             $table->string('telefono');
+            $table->string('descripcion');
             $table->timestamps();
         });
     }
