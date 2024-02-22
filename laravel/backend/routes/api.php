@@ -12,14 +12,16 @@ Route::get('/csrf-token', function () {
     return csrf_token();
 });
 // middleware usuarios
-Route::middleware(['api'])->group(function () {
-    Route::get('/user', function() {
-        return Auth::user();
-    })->middleware('auth');
-
-    Route::post('/login', [userController::class, 'login']);
-    Route::post('/register', [userController::class, 'register']);
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
 });
+
+
+Route::post('login', 'App\Http\Controllers\AuthController@login');
+Route::post('register', 'App\Http\Controllers\AuthController@register');
+
+Route::post('/login', [userController::class, 'login']);
+Route::post('/register', [userController::class, 'register']);
 
 // ruta para obtener todos los usuarios
 Route::get('/users', [userController::class, 'getUsers']);
