@@ -54,13 +54,19 @@ export const useUsuarioStore = defineStore("usuario", () => {
     };
 
     const register = async (data: any) => {
+     
         try {
+
+            const response = await fetch("http://localhost:8000/api/csrf-token");
+            const data = await response.json();
+            const csrfToken = data.token;
  
             const res = await $fetch<get__usuario>("http://localhost:8000/api/register", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,  
                 },
                 body: JSON.stringify(data),
             });
