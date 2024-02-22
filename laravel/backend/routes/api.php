@@ -20,8 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('login', 'App\Http\Controllers\AuthController@login');
 Route::post('register', 'App\Http\Controllers\AuthController@register');
 
-Route::post('/login', [userController::class, 'login']);
-Route::post('/register', [userController::class, 'register']);
+// Route::post('/login', [userController::class, 'login']);
+// Route::post('/register', [userController::class, 'register']);
 
 // ruta para obtener todos los usuarios
 Route::get('/users', [userController::class, 'getUsers']);
